@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Village Household Survey</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+    <div class="card">
+      <header class="card-header">
+        <h1>Village Household Survey</h1>
+        <p class="lead">One form per household. Please fill the household details first, then the residents and agricultural info.</p>
+      </header>
+
+      <form id="surveyForm" action="https://formspree.io/f/movnyvep" method="POST" novalidate>
+        <!-- Hidden Formspree extras -->
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="thankyou.html">
+
+        <!-- HOUSEHOLD -->
+        <section class="section">
+          <h2>Household Information</h2>
+          <div class="grid">
+            <div class="field">
+              <label for="numResidents">Number of residents <span class="muted">(1–10)</span></label>
+              <select id="numResidents" name="numResidents" required>
+                <option value="">Select...</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="houseCountry">Country</label>
+              <select id="houseCountry" name="houseCountry" required></select>
+            </div>
+
+            <div class="field">
+              <label for="houseCity">City</label>
+              <input id="houseCity" name="houseCity" required placeholder="e.g. Beirut">
+            </div>
+
+            <div class="field">
+              <label for="houseStreet">Street</label>
+              <input id="houseStreet" name="houseStreet" required placeholder="e.g. Main St.">
+            </div>
+
+            <div class="field">
+              <label for="houseBuilding">Building</label>
+              <input id="houseBuilding" name="houseBuilding" required placeholder="House / Apt no.">
+            </div>
+          </div>
+        </section>
+
+        <!-- RESIDENTS -->
+        <section class="section">
+          <h2>Residents</h2>
+          <p class="muted">After selecting the number of residents, resident forms appear below.</p>
+          <div id="residentsContainer"></div>
+        </section>
+
+        <!-- AGRICULTURE -->
+        <section class="section">
+          <h2>Agricultural Details</h2>
+          <div id="terrainsContainer"></div>
+          <div class="controls-row">
+            <button type="button" id="addTerrainBtn" class="btn outline">+ Add Terrain</button>
+            <button type="button" id="clearTerrainsBtn" class="btn ghost">Clear All Terrains</button>
+          </div>
+        </section>
+
+        <!-- Hidden JSON payload -->
+        <textarea id="payloadField" name="data" hidden></textarea>
+
+        <div class="actions">
+          <button type="submit" class="btn primary">Submit Household</button>
+        </div>
+      </form>
+
+      <footer class="card-footer">
+        <small>Data collected for statistical purposes. Make sure all required fields are filled.</small>
+      </footer>
+    </div>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
