@@ -1,109 +1,123 @@
-/* Simple modern styling, responsive */
-/* Fonts: system stack for speed */
-:root{
-  --bg: #f1f5f9;
-  --card: #ffffff;
-  --accent: #1752b0;
-  --accent-2: #06a77d;
-  --muted: #6b7280;
-  --radius: 12px;
-  --gap: 1rem;
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f8fb;
+  margin: 0;
+  padding: 0;
 }
 
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: linear-gradient(180deg,#eef2ff 0%, #f8fafc 100%);
-  color:#0f172a;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  padding:2rem;
-}
-
-.page{
-  max-width:1100px;
-  margin:0 auto;
-  display:flex;
-  align-items:flex-start;
-  justify-content:center;
-}
-
-.card{
-  width:100%;
-  background:var(--card);
-  border-radius:var(--radius);
-  box-shadow: 0 6px 28px rgba(15,23,42,0.08);
-  padding:1.5rem;
-  border: 1px solid rgba(15,23,42,0.03);
-}
-
-.card-header h1{
-  margin:0 0 .25rem 0;
-  font-size:1.5rem;
-  color:var(--accent);
-}
-.lead{margin:0;color:var(--muted);margin-bottom:1rem}
-
-.section{border-top:1px solid rgba(15,23,42,0.04);padding-top:1rem;margin-top:1rem}
-.section h2{margin:0 0 .5rem 0;font-size:1.05rem;color:#0b1220}
-.muted{color:var(--muted);font-size:.9rem}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2, 1fr);
-  gap:var(--gap);
-}
-.field{display:flex;flex-direction:column}
-label{font-weight:600;margin-bottom:0.4rem;font-size:.95rem}
-input, select, textarea{
-  padding:.6rem .7rem;
-  border-radius:9px;
-  border:1px solid rgba(11,17,32,0.08);
-  font-size:0.95rem;
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
   background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-textarea{min-height:110px;resize:vertical}
 
-.controls-row{display:flex;gap:.6rem;align-items:center;margin-top:.5rem}
-.btn{
-  padding:.55rem .85rem;border-radius:10px;border:1px solid rgba(11,17,32,0.06);
-  background:#fff;cursor:pointer;font-weight:600;font-size:.95rem;
+h1 {
+  text-align: center;
+  color: #2c3e50;
 }
-.btn.primary{
-  background: linear-gradient(90deg,var(--accent), #2b6ad6);
-  color:#fff;border:none;box-shadow:0 6px 18px rgba(23,82,176,0.16)
+
+section {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border: 1px solid #e0e6ed;
+  border-radius: 10px;
+  background: #fafbfd;
 }
-.btn.ghost{background:transparent}
-.btn.outline{background:transparent;border:1px dashed rgba(11,17,32,0.06)}
 
-.actions{display:flex;justify-content:flex-end;margin-top:1rem}
-
-.card-footer{margin-top:1rem;color:var(--muted);font-size:.85rem}
-
-/* Resident & terrain cards */
-.resident, .terrain{
-  border-radius:10px;
-  background:linear-gradient(180deg,#fff,#fbfdff);
-  padding:1rem;
-  margin-bottom:1rem;
-  border:1px solid rgba(11,17,32,0.03);
-  box-shadow: 0 4px 12px rgba(2,6,23,0.02);
+h2 {
+  margin-top: 0;
+  color: #34495e;
 }
-.resident h3{margin:0 0 .5rem 0;font-size:1rem;color:#0f172a}
-.row{display:flex;gap:.6rem}
-.col{flex:1}
 
-/* small utility */
-.small{font-size:.9rem;color:var(--muted);margin-top:.4rem}
-.inline{display:inline-flex;gap:.5rem;align-items:center}
-.radio-group{display:flex;gap:.6rem;flex-wrap:wrap}
-
-.note{font-size:.86rem;color:var(--muted);margin-top:.5rem}
-
-/* responsive */
-@media (max-width:840px){
-  .grid{grid-template-columns:1fr}
-  .actions{justify-content:center}
+fieldset {
+  border: 1px solid #dce4ec;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
 }
+
+legend {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+label {
+  display: block;
+  margin: 0.5rem 0;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ccd6dd;
+  border-radius: 6px;
+}
+
+button {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+button:hover {
+  background: #2980b9;
+}
+
+.resident-block {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border: 1px solid #dce4ec;
+  border-radius: 10px;
+  background: #fdfdfd;
+}
+
+.resident-block h3 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.medical-section {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #eef6f9;
+  border-radius: 8px;
+}
+
+.medical-section h4 {
+  margin-top: 0;
+  color: #16a085;
+}
+
+/* Grid and resident/terrain cards */
+.resident, .terrain {
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  border: 1px solid #dce4ec;
+  border-radius: 10px;
+  background: #fdfdfd;
+}
+
+.resident h3, .terrain h3 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: .75rem 1rem;
+}
+
+.field label { font-weight: 600; }
+
+.small { color: #6b7280; font-size: .9rem; }
+.terrain .remove-terrain { background: #e11d48; }
+.terrain .remove-terrain:hover { background: #be123c; }
