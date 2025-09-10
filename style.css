@@ -121,3 +121,92 @@ button:hover {
 .small { color: #6b7280; font-size: .9rem; }
 .terrain .remove-terrain { background: #e11d48; }
 .terrain .remove-terrain:hover { background: #be123c; }
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr !important; /* stack fields vertically */
+  }
+
+  input, select, button {
+    font-size: 1rem;
+    padding: 0.9rem;
+  }
+
+  label {
+    font-size: 0.95rem;
+  }
+
+  .medical-section select[multiple] {
+    min-height: 120px;        /* bigger for touch */
+    max-height: 180px;        /* scrollable on phone */
+    overflow-y: auto;
+  }
+
+  .resident, .terrain {
+    padding: 0.8rem;
+  }
+
+  button {
+    width: 100%;              /* buttons take full width on phone */
+    font-size: 1.05rem;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  body {
+    padding: 0.5rem;
+  }
+
+  .container {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .medical-section select[multiple] {
+    font-size: 0.95rem;
+  }
+}
+
+.chronic-diseases {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.4rem 0.8rem;   /* smaller, balanced gaps */
+  margin: 0.5rem 0 1rem;
+}
+
+.chronic-diseases label {
+  display: flex;
+  align-items: center;
+  font-weight: normal;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 0.3rem 0.4rem;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.chronic-diseases label:hover {
+  background: #f2f8f7;  /* subtle hover */
+}
+
+.chronic-diseases input[type="checkbox"] {
+  transform: scale(1.15);
+  accent-color: #16a085; /* consistent with medical green */
+}
+
+@media (max-width: 768px) {
+  .chronic-diseases {
+    grid-template-columns: 1fr; /* stack neatly on phones */
+  }
+}
