@@ -1,220 +1,34 @@
-/* ===== General Reset ===== */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+:root{
+  --bg:#f9fafb;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --text:#1f2937;
+  --accent:#3b82f6;
+  --accent-2:#2563eb;
+  --danger:#ef4444;
+  --input:#f3f4f6;
+  --ring:#d1d5db;
 }
-
-body {
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  background: #f5f7fa;
-  color: #2c3e50;
-  line-height: 1.5;
-}
-
-/* ===== Container ===== */
-.container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1.5rem;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-}
-
-/* ===== Headings ===== */
-h1 {
-  text-align: center;
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  color: #1a365d;
-}
-
-h2 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  color: #2d3748;
-}
-
-h3 {
-  font-size: 1.1rem;
-  margin-bottom: 0.75rem;
-  color: #2d3748;
-}
-
-h4 {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-  color: #16a085;
-}
-
-/* ===== Sections ===== */
-section {
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  background: #fafbfc;
-}
-
-/* ===== Labels & Inputs ===== */
-label {
-  display: block;
-  margin-bottom: 0.4rem;
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 0.7rem 0.9rem;
-  border: 1px solid #cbd5e0;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  background: #fff;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: #3182ce;
-  box-shadow: 0 0 0 3px rgba(49,130,206,0.2);
-  outline: none;
-}
-
-/* ===== Buttons ===== */
-button {
-  display: inline-block;
-  background: #3182ce;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  padding: 0.9rem 1.4rem;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
-}
-
-button:hover {
-  background: #2b6cb0;
-}
-
-button:active {
-  transform: scale(0.98);
-}
-
-.terrain .remove-terrain {
-  background: #e53e3e;
-}
-
-.terrain .remove-terrain:hover {
-  background: #c53030;
-}
-
-/* ===== Resident & Terrain Cards ===== */
-.resident, .terrain {
-  margin-bottom: 1.25rem;
-  padding: 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-}
-
-/* ===== Grid Layouts ===== */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-}
-
-.field label {
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-}
-
-.small {
-  color: #718096;
-  font-size: 0.85rem;
-}
-
-/* ===== Medical Section ===== */
-.medical-section {
-  margin-top: 1rem;
-  padding: 1rem;
-  background: #f0f9f9;
-  border-radius: 10px;
-}
-
-/* Chronic diseases checkboxes */
-.chronic-diseases {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 0.5rem 1rem;
-  margin-top: 0.5rem;
-}
-
-.chronic-diseases label {
-  display: flex;
-  align-items: center;
-  font-weight: 400;
-  font-size: 0.95rem;
-  gap: 0.4rem;
-}
-
-.chronic-diseases input[type="checkbox"] {
-  transform: scale(1.2);
-  accent-color: #16a085;
-}
-
-/* ===== Responsive Adjustments ===== */
-@media (max-width: 768px) {
-  .container {
-    width: 94%;
-    padding: 1rem;
-    margin: 1rem auto;
-  }
-
-  h1 {
-    font-size: 1.4rem;
-  }
-
-  h2 {
-    font-size: 1.1rem;
-  }
-
-  input, select, button {
-    font-size: 0.95rem;
-    padding: 0.8rem;
-  }
-
-  button {
-    width: 100%;
-    margin-top: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  h1 {
-    font-size: 1.2rem;
-  }
-
-  h2 {
-    font-size: 1rem;
-  }
-
-  .grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  input, select {
-    font-size: 0.9rem;
-    padding: 0.7rem;
-  }
-
-  button {
-    font-size: 1rem;
-    padding: 0.85rem;
-  }
-}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;padding:12px;display:flex;justify-content:center}
+.container{width:min(900px,100%)}
+.header{margin-bottom:20px}
+h1{margin:0;font-size:22px}
+.subtitle{color:var(--muted);font-size:14px}
+form{background:var(--card);border:1px solid var(--ring);border-radius:12px;padding:16px;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+fieldset{border:1px solid var(--ring);border-radius:10px;margin:12px 0;padding:12px}
+legend{color:var(--accent);font-weight:700;font-size:14px}
+.grid{display:grid;gap:10px}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:720px){.grid-2{grid-template-columns:1fr}}
+label{font-weight:600;font-size:14px;margin-bottom:4px;display:block}
+input,select,textarea{width:100%;border:1px solid var(--ring);background:var(--input);color:var(--text);padding:8px;border-radius:6px;font-size:14px;box-sizing:border-box}
+input:focus,select:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 2px rgba(59,130,246,.2)}
+.btn{border:none;border-radius:6px;padding:6px 10px;font-weight:700;cursor:pointer;font-size:13px}
+.btn-accent{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff}
+.btn-ghost{border:1px dashed var(--ring);background:transparent;color:var(--text)}
+.btn-danger{border:1px solid var(--danger);background:transparent;color:var(--danger)}
+.resident-card,.terrain-card,.job-card{border:1px solid var(--ring);border-radius:10px;padding:10px;background:var(--card);margin-top:8px}
+.footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px}
+.note{color:var(--muted);font-size:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--ring);background:var(--input);padding:4px 8px;border-radius:999px;cursor:pointer;font-size:13px}
+.radio-group{display:flex;flex-wrap:wrap;gap:8px}

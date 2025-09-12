@@ -1,80 +1,201 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Village Resident Form</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>نموذج إحصاء سكان القرية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="lang-toggle">
-        <a href="index-ar.html">🇸🇦 عربي</a>
-    </div>
   <div class="container">
-    
+    <header class="header">
+      <h1>نموذج إحصاء سكان القرية</h1>
+      <div class="subtitle">يُعبّأ من قِبل ربّ الأسرة، وترسل البيانات عبر Formspree</div>
+    </header>
 
-    <h1>Village Household & Resident Information</h1>
-
-    <!-- Ensure this id matches JS -->
-    <form action="https://formspree.io/f/movnyvep" method="POST" id="villageForm">
-      <!-- Redirect to local thank you page after Formspree submission -->
-      <input type="hidden" name="_redirect" value="thankyou.html"/>
-
-      <!-- Hidden JSON payload field that JS will fill before submit -->
-      <textarea name="data" id="payloadField" hidden></textarea>
-
-      <!-- Household Information -->
-      <section>
-        <h2>🏠 Household Information</h2>
-
-        <label>Number of Residents:
-          <!-- JS will populate 1..10 -->
-          <select id="residentCount" name="residentCount" required>
-            <option value="">Select...</option>
-          </select>
-        </label>
-
-        <fieldset>
-          <legend>Household Location</legend>
-
-          <label>Country:
-            <!-- Add id so JS can populate countries -->
-            <select id="houseCountry" name="household_country" required>
-              <option value="">Select country</option>
+    <form id="censusForm" action="https://formspree.io/f/xxxxxxx" method="POST" novalidate>
+      <fieldset>
+        <legend>معلومات الأسرة</legend>
+        <div class="grid grid-2">
+          <div>
+            <label>عدد المقيمين <span class="req">*</span></label>
+            <select id="householdCount" name="household[count]" required>
+              <option value="" disabled selected>اختر العدد</option>
+              <option>1</option><option>2</option><option>3</option>
+              <option>4</option><option>5</option><option>6</option>
+              <option>7</option><option>8</option><option>9</option><option>10</option>
             </select>
-          </label>
+          </div>
+          <div>
+            <label>الدولة <span class="req">*</span></label>
+            <select id="householdCountry" name="household[country]" required></select>
+          </div>
+          <div>
+            <label>المدينة <span class="req">*</span></label>
+            <input type="text" id="householdCity" name="household[city]" required />
+          </div>
+          <div>
+            <label>الشارع <span class="req">*</span></label>
+            <input type="text" id="householdStreet" name="household[street]" required />
+          </div>
+          <div>
+            <label>المبنى <span class="req">*</span></label>
+            <input type="text" id="householdBuilding" name="household[building]" required />
+          </div>
+        </div>
+      </fieldset>
 
-          <label>City:
-            <input type="text" id="houseCity" name="household_city" required />
-          </label>
+      <fieldset>
+        <legend>المقيمون</legend>
+        <div id="residentsWrap" class="grid"></div>
+      </fieldset>
 
-          <label>Street:
-            <input type="text" id="houseStreet" name="household_street" required />
-          </label>
+      <fieldset>
+        <legend>الأراضي الزراعية (اختياري)</legend>
+        <button class="btn btn-ghost" type="button" id="addTerrainBtn">+ إضافة عقار</button>
+        <div id="terrainsWrap" class="grid"></div>
+      </fieldset>
 
-          <label>Building:
-            <input type="text" id="houseBuilding" name="household_building" required />
-          </label>
-        </fieldset>
-      </section>
-
-      <!-- Residents Information (Dynamic) -->
-      <section id="residentsSection">
-        <h2>👥 Residents</h2>
-        <div id="residentsContainer"></div>
-      </section>
-
-      <!-- Agricultural Details -->
-      <section id="agricultureSection">
-        <h2>🌱 Agricultural Details</h2>
-        <div id="terrainsContainer"></div>
-        <!-- Use an id (no inline onclick) -->
-        <button type="button" id="addTerrainBtn">+ Add Terrain</button>
-      </section>
-
-      <button type="submit">Submit</button>
+      <div class="footer">
+        <div class="note">باختيار "إرسال"، فأنت توافق على استخدام البيانات لأغراض الإحصاء فقط.</div>
+        <button type="submit" class="btn btn-accent">إرسال</button>
+      </div>
     </form>
   </div>
+
+  <!-- قالب المقيم -->
+  <template id="residentTemplate">
+    <div class="resident-card">
+      <div class="section-title">
+        <h3>مقيم <span class="res-index">#</span></h3>
+        <button type="button" class="btn btn-danger remove-resident">حذف</button>
+      </div>
+
+      <div class="grid grid-2">
+        <div><label>الاسم</label><input type="text" name="__NAME__" required></div>
+        <div><label>اسم الأب</label><input type="text" name="__FATHER__" required></div>
+        <div><label>الشهرة</label><input type="text" name="__LAST__" required></div>
+      </div>
+
+      <div class="grid grid-2">
+        <div><label>اسم الأم</label><input type="text" name="__MOTHER_NAME__" required></div>
+        <div><label>شهرة الأم</label><input type="text" name="__MOTHER_LAST__" required></div>
+      </div>
+
+      <div class="grid grid-2">
+        <div><label>تاريخ الولادة</label><input type="date" name="__DOB__" required></div>
+        <div><label>الجنس</label>
+          <select name="__SEX__" required>
+            <option disabled selected>اختر</option><option>ذكر</option><option>أنثى</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <div><label>رقم السجل</label><input type="text" name="__REG_NO__" required></div>
+        <div><label>مكان السجل</label><input type="text" name="__REG_LOC__" required></div>
+      </div>
+
+      <div class="grid grid-2">
+        <div><label>الهاتف الأرضي</label><input type="tel" name="__TEL_LAND__"></div>
+        <div><label>الهاتف الخلوي</label><input type="tel" name="__TEL_MOBILE__" required></div>
+      </div>
+
+      <!-- صفة الإقامة -->
+      <div class="grid">
+        <label>صفة الإقامة</label>
+        <div class="radio-group">
+          <label class="chip"><input type="radio" name="__RES_STATUS__" value="مقيم" required> مقيم</label>
+          <label class="chip"><input type="radio" name="__RES_STATUS__" value="غير مقيم" required> غير مقيم</label>
+        </div>
+        <div class="radio-group non-resident-options" style="display:none;">
+          <label class="chip"><input type="radio" name="__NR_SCOPE__" value="داخل البلد"> داخل البلد</label>
+          <label class="chip"><input type="radio" name="__NR_SCOPE__" value="مغترب"> مغترب</label>
+        </div>
+        <div class="grid grid-2 res-addr" style="display:none;">
+          <div><label>الدولة</label><select name="__RES_COUNTRY__" class="country-select"></select></div>
+          <div><label>المدينة</label><input type="text" name="__RES_CITY__"></div>
+          <div><label>الشارع</label><input type="text" name="__RES_STREET__"></div>
+          <div><label>المبنى</label><input type="text" name="__RES_BUILDING__"></div>
+        </div>
+      </div>
+
+      <!-- المهن -->
+      <div class="jobs-section">
+        <div class="section-title">
+          <h4>المهن</h4>
+          <button type="button" class="btn btn-ghost add-job">+ إضافة مهنة</button>
+        </div>
+        <div class="jobs-wrap"></div>
+      </div>
+
+      <!-- الأمراض -->
+      <div class="grid grid-2">
+        <div>
+          <label>فصيلة الدم</label>
+          <select name="__BLOOD__">
+            <option disabled selected>اختر</option>
+            <option>O+</option><option>O-</option>
+            <option>A+</option><option>A-</option>
+            <option>B+</option><option>B-</option>
+            <option>AB+</option><option>AB-</option>
+          </select>
+        </div>
+        <div>
+          <label>أمراض مزمنة</label>
+          <div class="chronic-wrap">
+            <label class="chip"><input type="checkbox" value="لا يوجد" class="chronic-none"> لا يوجد</label>
+            <label class="chip"><input type="checkbox" value="سكري"> سكري</label>
+            <label class="chip"><input type="checkbox" value="ضغط دم"> ضغط دم</label>
+            <label class="chip"><input type="checkbox" value="سرطان"> سرطان</label>
+            <label class="chip"><input type="checkbox" value="مشاكل قلب"> مشاكل قلب</label>
+            <label class="chip"><input type="checkbox" value="ربو"> ربو</label>
+            <label class="chip"><input type="checkbox" value="أمراض كلوية"> أمراض كلوية</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <!-- قالب المهنة -->
+  <template id="jobTemplate">
+    <div class="job-card">
+      <div class="grid grid-2">
+        <div>
+          <label>الوضع المهني</label>
+          <select name="__JOB_STATUS__" required>
+            <option disabled selected>اختر</option>
+            <option>بدون مهنة</option>
+            <option>موظف</option>
+            <option>صاحب عمل</option>
+          </select>
+        </div>
+        <div><label>نوع المهنة</label><input type="text" name="__JOB_TITLE__"></div>
+        <div><label>جهة العمل</label><input type="text" name="__JOB_EMPLOYER__"></div>
+      </div>
+      <div class="grid grid-2 job-loc">
+        <div><label>دولة العمل</label><select name="__JOB_COUNTRY__" class="country-select"></select></div>
+        <div><label>مدينة العمل</label><input type="text" name="__JOB_CITY__"></div>
+      </div>
+      <button type="button" class="btn btn-danger remove-job">حذف المهنة</button>
+    </div>
+  </template>
+
+  <!-- قالب العقار -->
+  <template id="terrainTemplate">
+    <div class="terrain-card">
+      <div class="section-title">
+        <h4>عقار</h4>
+        <button type="button" class="btn btn-danger remove-terrain">حذف</button>
+      </div>
+      <div class="grid grid-2">
+        <div><label>رقم العقار</label><input type="text" name="terrains[__TINDEX__][id]"></div>
+        <div><label>نوع الزراعة</label><input type="text" name="terrains[__TINDEX__][type]"></div>
+        <div><label>عدد الأشجار</label><input type="number" name="terrains[__TINDEX__][trees]"></div>
+      </div>
+    </div>
+  </template>
 
   <script src="script.js"></script>
 </body>

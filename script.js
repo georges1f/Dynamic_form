@@ -1,331 +1,275 @@
-/* script.js
-   Static-only version for GitHub Pages
-   - Uses a hardcoded list of countries
-   - Generates resident forms dynamically
-   - Handles profession logic (none/employee/business)
-   - Handles residency logic (resident/non-resident/expatriated)
-   - Manages terrains
-   - Collects all data into JSON for Formspree
-*/
+/* script.js — إحصاء سكان القرية (RTL, mobile-first) */
 
-const countries = [
-    "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia",
-    "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium",
-    "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria",
-    "Burkina Faso", "Burundi", "Côte d'Ivoire", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic",
-    "Chad", "Chile", "China", "Colombia", "Comoros", "Congo (Congo-Brazzaville)", "Costa Rica", "Croatia", "Cuba", "Cyprus",
-    "Czechia", "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador",
-    "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Federated States of Micronesia",
-    "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea",
-    "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel",
-    "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon",
-    "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives",
-    "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Moldova", "Monaco", "Mongolia", "Montenegro",
-    "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger",
-    "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Palestine State", "Panama", "Papua New Guinea",
-    "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis",
-    "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal",
-    "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa",
-    "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Tajikistan", "Tanzania",
-    "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda",
-    "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu",
-    "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+// ——————— الدول ———————
+const COUNTRIES = [
+  "لبنان","سوريا","الأردن","فلسطين","العراق","مصر","السعودية","الإمارات","الكويت","قطر","البحرين","عُمان","اليمن",
+  "المغرب","تونس","الجزائر","ليبيا","تركيا","فرنسا","ألمانيا","المملكة المتحدة","الولايات المتحدة"
 ];
 
-/* ===== DOM references (aligned to index.html) ===== */
-const numResidentsEl = document.getElementById('residentCount');
-const houseCountryEl = document.getElementById('houseCountry');
-const residentsContainer = document.getElementById('residentsContainer');
+function fillCountries(select){
+  if(!select) return;
+  select.innerHTML = '<option disabled selected>اختر الدولة</option>' + COUNTRIES.map(c=>`<option>${c}</option>`).join('');
+}
+
+// تعبئة دولة الأسرة عند التحميل
+fillCountries(document.getElementById('householdCountry'));
+
+// ——————— عناصر عامة ———————
+const rTpl = document.getElementById('residentTemplate');
+const jTpl = document.getElementById('jobTemplate');
+const tTpl = document.getElementById('terrainTemplate');
+
+const residentsWrap   = document.getElementById('residentsWrap');
+const terrainsWrap    = document.getElementById('terrainsWrap');
+const householdCount  = document.getElementById('householdCount');
+const form            = document.getElementById('censusForm');
+
+const hhCountry  = document.getElementById('householdCountry');
+const hhCity     = document.getElementById('householdCity');
+const hhBuilding = document.getElementById('householdBuilding');
+
+// ————————————————————————————————————————————————
+// تسمية الحقول داخل بطاقة مقيم i لتناسب Formspree
+// ————————————————————————————————————————————————
+function nameMapResident(card, i){
+  const pairs = [
+    ['__NAME__',        `residents[${i}][first_name]`],
+    ['__FATHER__',      `residents[${i}][father_name]`],
+    ['__LAST__',        `residents[${i}][last_name]`],
+    ['__MOTHER_NAME__', `residents[${i}][mother_first]`],
+    ['__MOTHER_LAST__', `residents[${i}][mother_last]`],
+    ['__DOB__',         `residents[${i}][dob]`],
+    ['__REG_NO__',      `residents[${i}][registry_no]`],
+    ['__REG_LOC__',     `residents[${i}][registry_place]`],
+    ['__SEX__',         `residents[${i}][sex]`],
+    ['__TEL_LAND__',    `residents[${i}][tel_landline]`],
+    ['__TEL_MOBILE__',  `residents[${i}][tel_mobile]`],
+    ['__RES_STATUS__',  `residents[${i}][residency_status]`],
+    ['__NR_SCOPE__',    `residents[${i}][non_resident_scope]`],
+    ['__RES_COUNTRY__', `residents[${i}][address][country]`],
+    ['__RES_CITY__',    `residents[${i}][address][city]`],
+    ['__RES_STREET__',  `residents[${i}][address][street]`],
+    ['__RES_BUILDING__',`residents[${i}][address][building]`],
+    ['__BLOOD__',       `residents[${i}][medical][blood]`],
+  ];
+
+  card.querySelectorAll('input,select,textarea').forEach(el=>{
+    pairs.forEach(([k,v])=>{ if(el.name === k) el.name = v; });
+  });
+
+  // الأمراض المزمنة كقائمة Array
+  card.querySelectorAll('.chronic-wrap input[type="checkbox"]').forEach(cb=>{
+    cb.name = `residents[${i}][medical][chronic][]`;
+  });
+}
+
+// ————————————————————————————————————————————————
+// إنشاء بطاقة مقيم
+// ————————————————————————————————————————————————
+function createResidentCard(i){
+  const node = rTpl.content.cloneNode(true);
+  const card = node.querySelector('.resident-card');
+  card.querySelector('.res-index').textContent = i+1;
+
+  // تعيين أسماء الحقول
+  nameMapResident(card, i);
+
+  // زر حذف المقيم
+  card.querySelector('.remove-resident').addEventListener('click', ()=> card.remove());
+
+  // المهن: إضافة أول مهنة افتراضيًا
+  const jobsWrap = card.querySelector('.jobs-wrap');
+  addJob(jobsWrap, i);
+  card.querySelector('.add-job').addEventListener('click', ()=> addJob(jobsWrap, i));
+
+  // تعبئة قوائم الدول داخل البطاقة (عناوين/عمل)
+  card.querySelectorAll('select.country-select').forEach(fillCountries);
+
+  // تعبئة تلقائية لرقم/مكان السجل من الأسرة عند الإنشاء
+  const regNo  = card.querySelector(`input[name="residents[${i}][registry_no]"]`);
+  const regLoc = card.querySelector(`input[name="residents[${i}][registry_place]"]`);
+  if(regNo)  regNo.value  = (hhBuilding && hhBuilding.value) || '';
+  if(regLoc) regLoc.value = (hhCity && hhCity.value) || '';
+
+  // ——— صفة الإقامة ومنطق العناوين ———
+  const addrWrap  = card.querySelector('.res-addr');
+  const nrOpts    = card.querySelector('.non-resident-options');
+  const resStatus = card.querySelectorAll(`input[name="residents[${i}][residency_status]"]`);
+  const nrScope   = card.querySelectorAll(`input[name="residents[${i}][non_resident_scope]"]`);
+
+  const resCountry = addrWrap.querySelector('select');
+  const [cityInp, streetInp, bldgInp] = addrWrap.querySelectorAll('input');
+
+  // إخفاء/إظهار العنوان ومتطلبات الحقول
+  function setAddrReq({show=false, needCountry=false}){
+    addrWrap.style.display = show ? 'grid' : 'none';
+    if(resCountry) resCountry.required = needCountry;
+    [cityInp, streetInp, bldgInp].forEach(el => { if(el) el.required = show; });
+    if(!show){
+      if(resCountry) resCountry.value = '';
+      if(cityInp)  cityInp.value  = '';
+      if(streetInp)streetInp.value= '';
+      if(bldgInp)  bldgInp.value  = '';
+    }
+  }
+  setAddrReq({show:false, needCountry:false});
+  nrOpts.style.display = 'none';
+
+  // اختيار "مقيم" / "غير مقيم"
+  resStatus.forEach(r=>r.addEventListener('change', ()=>{
+    if(r.value === 'مقيم' && r.checked){
+      nrOpts.style.display = 'none';
+      setAddrReq({show:false});
+    }
+    if(r.value === 'غير مقيم' && r.checked){
+      nrOpts.style.display = 'flex';
+    }
+  }));
+
+  // اختيار "داخل البلد" / "مغترب"
+  nrScope.forEach(opt=>opt.addEventListener('change', ()=>{
+    const v = [...nrScope].find(x=>x.checked)?.value;
+    if(v === 'داخل البلد'){
+      setAddrReq({show:true, needCountry:false});
+      fillCountries(resCountry);
+      if(resCountry) resCountry.value = (hhCountry && hhCountry.value) || '';
+    }else if(v === 'مغترب'){
+      setAddrReq({show:true, needCountry:true});
+      fillCountries(resCountry);
+      if(resCountry) resCountry.value = '';
+    }
+  }));
+
+  return card;
+}
+
+// ————————————————————————————————————————————————
+// إضافة مهنة (لمقيم resIdx) + تسمية حقول المهنة
+// ————————————————————————————————————————————————
+function addJob(wrap, resIdx){
+  const node   = jTpl.content.cloneNode(true);
+  const jobCard= node.querySelector('.job-card');
+  const count  = wrap.querySelectorAll('.job-card').length; // فهرس المهنة j
+
+  // تسمية الحقول حسب فهارس المقيم/المهنة
+  const pairs = [
+    ['__JOB_STATUS__',  `residents[${resIdx}][jobs][${count}][status]`],
+    ['__JOB_TITLE__',   `residents[${resIdx}][jobs][${count}][title]`],
+    ['__JOB_EMPLOYER__',`residents[${resIdx}][jobs][${count}][employer]`],
+    ['__JOB_COUNTRY__', `residents[${resIdx}][jobs][${count}][country]`],
+    ['__JOB_CITY__',    `residents[${resIdx}][jobs][${count}][city]`],
+  ];
+  jobCard.querySelectorAll('input,select').forEach(el=>{
+    pairs.forEach(([k,v])=>{ if(el.name === k) el.name = v; });
+  });
+
+  // تعبئة الدول لحقل دولة العمل
+  jobCard.querySelectorAll('select.country-select').forEach(fillCountries);
+
+  // منطق "بدون مهنة" يخفي/يلغي إلزام موقع العمل ويمسح المدخلات
+  const statusSel  = jobCard.querySelector(`select[name="residents[${resIdx}][jobs][${count}][status]"]`);
+  const jobLoc     = jobCard.querySelector('.job-loc');
+  const jobCountry = jobCard.querySelector(`select[name="residents[${resIdx}][jobs][${count}][country]"]`);
+  const jobCity    = jobCard.querySelector(`input[name="residents[${resIdx}][jobs][${count}][city]"]`);
+  const jobTitle   = jobCard.querySelector(`input[name="residents[${resIdx}][jobs][${count}][title]"]`);
+  const jobEmployer= jobCard.querySelector(`input[name="residents[${resIdx}][jobs][${count}][employer]"]`);
+
+  function toggleJobFields(){
+    const v = statusSel.value;
+    const active = (v === 'موظف' || v === 'صاحب عمل');
+    jobLoc.style.display = active ? 'grid' : 'none';
+    [jobCountry, jobCity, jobTitle, jobEmployer].forEach(el => el.required = active);
+    if(!active){
+      jobCountry.value = '';
+      jobCity.value    = '';
+      jobTitle.value   = '';
+      jobEmployer.value= '';
+    }
+  }
+  statusSel.addEventListener('change', toggleJobFields);
+  toggleJobFields();
+
+  // حذف المهنة
+  jobCard.querySelector('.remove-job').addEventListener('click', ()=> jobCard.remove());
+
+  wrap.appendChild(node);
+}
+
+// ————————————————————————————————————————————————
+// بناء بطاقات المقيمين حسب العدد المختار
+// ————————————————————————————————————————————————
+householdCount.addEventListener('change', ()=>{
+  residentsWrap.innerHTML = '';
+  const n = parseInt(householdCount.value || '0', 10);
+  for(let i=0;i<n;i++){
+    residentsWrap.appendChild(createResidentCard(i));
+  }
+});
+
+// ————————————————————————————————————————————————
+// تحديث تلقائي لحقول السجل إذا تغيّرت معلومات الأسرة
+// (يُحدّث المقيمين الذين بقيت خاناتهم فارغة فقط)
+// ————————————————————————————————————————————————
+function syncRegistryToResidents(){
+  const cards = residentsWrap.querySelectorAll('.resident-card');
+  cards.forEach((card, idx)=>{
+    const regNo  = card.querySelector(`input[name="residents[${idx}][registry_no]"]`);
+    const regLoc = card.querySelector(`input[name="residents[${idx}][registry_place]"]`);
+    if(regNo && !regNo.value)  regNo.value  = (hhBuilding && hhBuilding.value) || '';
+    if(regLoc && !regLoc.value) regLoc.value = (hhCity && hhCity.value) || '';
+  });
+}
+[hhCity, hhBuilding].forEach(el => el && el.addEventListener('input', syncRegistryToResidents));
+
+// عند تغيير دولة الأسرة: حدّث دولة عنوان غير المقيم/داخل البلد
+hhCountry && hhCountry.addEventListener('change', ()=>{
+  const cards = residentsWrap.querySelectorAll('.resident-card');
+  cards.forEach((card, idx)=>{
+    const insideRadio = card.querySelector(`input[name="residents[${idx}][non_resident_scope]"][value="داخل البلد"]`);
+    const resCountry  = card.querySelector(`select[name="residents[${idx}][address][country]"]`);
+    if(insideRadio && insideRadio.checked && resCountry){
+      fillCountries(resCountry);
+      resCountry.value = hhCountry.value || '';
+    }
+  });
+});
+
+// ————————————————————————————————————————————————
+// إضافة عقار زراعي
+// ————————————————————————————————————————————————
 const addTerrainBtn = document.getElementById('addTerrainBtn');
-const terrainsContainer = document.getElementById('terrainsContainer');
-const surveyForm = document.getElementById('villageForm');
-const payloadField = document.getElementById('payloadField');
-
-/* ===== Helpers ===== */
-function populateCountries(selectEl, includeEmpty = true) {
-    if (!selectEl) return;
-    selectEl.innerHTML = "";
-    if (includeEmpty) {
-        const opt = document.createElement('option');
-        opt.value = '';
-        opt.innerText = 'Select...';
-        selectEl.appendChild(opt);
-    }
-    countries.forEach(c => {
-        const o = document.createElement('option');
-        o.value = c;
-        o.textContent = c;
-        selectEl.appendChild(o);
-    });
-}
-
-function populateNumResidents() {
-    // 1..10
-    for (let i = 1; i <= 10; i++) {
-        const o = document.createElement('option');
-        o.value = i;
-        o.textContent = i;
-        numResidentsEl.appendChild(o);
-    }
-}
-
-/* ===== Resident card ===== */
-function createResidentCard(index) {
-    const container = document.createElement('div');
-    container.className = 'resident';
-    container.dataset.index = index;
-
-    container.innerHTML = `
-    <h3>Resident ${index}</h3>
-
-    <div class="grid">
-      <div class="field"><label>First Name</label><input type="text" name="res_${index}_first" required></div>
-      <div class="field"><label>Father's Name</label><input type="text" name="res_${index}_father" required></div>
-      <div class="field"><label>Last Name</label><input type="text" name="res_${index}_last" required></div>
-
-      <div class="field"><label>Mother's First Name</label><input type="text" name="res_${index}_mother_first" required></div>
-      <div class="field"><label>Mother's Last Name</label><input type="text" name="res_${index}_mother_last" required></div>
-
-      <div class="field"><label>Date of Birth</label><input type="date" name="res_${index}_dob" required></div>
-      <div class="field"><label>Registry Number</label><input type="text" name="res_${index}_reg" required></div>
-      <div class="field"><label>Registry (Reference) City</label><input type="text" name="res_${index}_reg_city" required></div>
-
-      <div class="field">
-        <label>Sex</label>
-        <select name="res_${index}_sex" required>
-          <option value="">Select...</option>
-          <option>Male</option>
-          <option>Female</option>
-        </select>
-      </div>
-
-      <div class="field"><label>Landline</label><input type="tel" name="res_${index}_landline" pattern="[0-9+()\\-\\s]*"></div>
-      <div class="field"><label>Cellphone</label><input type="tel" name="res_${index}_cell" required pattern="[0-9+()\\-\\s]*"></div>
-    </div>
-
-    <div class="field">
-      <label>Residency status</label>
-      <label><input type="radio" name="res_${index}_status" value="resident" checked> Resident</label>
-      <label><input type="radio" name="res_${index}_status" value="non-resident"> Non resident (same country)</label>
-      <label><input type="radio" name="res_${index}_status" value="expatriate"> Expatriated</label>
-      <div class="resident-address"></div>
-    </div>
-
-    <fieldset>
-      <legend>Profession</legend>
-      <label><input type="radio" name="res_${index}_profession" value="none" checked> No Profession</label>
-      <label><input type="radio" name="res_${index}_profession" value="employee"> Employee</label>
-      <label><input type="radio" name="res_${index}_profession" value="business"> Business Owner</label>
-
-      <div class="work-address" style="display:none;">
-        <label>Work Country</label>
-        <select name="res_${index}_work_country"></select>
-        <label>City</label><input type="text" name="res_${index}_work_city">
-        <label>Street</label><input type="text" name="res_${index}_work_street">
-      </div>
-    </fieldset>
-
-    <div class="medical-section">
-  <h4>Medical Information</h4>
-  <label>Blood Type</label>
-  <select name="res_${index}_blood" required>
-    <option value="">Select...</option>
-    <option>A+</option><option>A-</option>
-    <option>B+</option><option>B-</option>
-    <option>AB+</option><option>AB-</option>
-    <option>O+</option><option>O-</option>
-  </select>
-
-  <label>Can Donate Blood?</label>
-  <select name="res_${index}_can_donate" required>
-    <option value="">Select...</option>
-    <option value="yes">Yes</option>
-    <option value="no">No</option>
-  </select>
-
-  <label>Chronic Diseases</label>
-  <div class="chronic-diseases">
-    <label><input type="checkbox" name="res_${index}_chronic" value="None"> None</label>
-    <label><input type="checkbox" name="res_${index}_chronic" value="Diabetes"> Diabetes</label>
-    <label><input type="checkbox" name="res_${index}_chronic" value="Hypertension"> Hypertension</label>
-    <label><input type="checkbox" name="res_${index}_chronic" value="Cancer"> Cancer</label>
-    <label><input type="checkbox" name="res_${index}_chronic" value="Heart Problems"> Heart Problems</label>
-  </div>
-</div>
-
-  `;
-
-    // populate work country select
-    const workCountrySelect = container.querySelector(`select[name="res_${index}_work_country"]`);
-    populateCountries(workCountrySelect);
-
-    // residency logic
-    const residencyRadios = container.querySelectorAll(`input[name="res_${index}_status"]`);
-    const addressDiv = container.querySelector('.resident-address');
-
-    function renderAddress(mode) {
-        addressDiv.innerHTML = "";
-        if (mode === "resident") {
-            addressDiv.innerHTML = `<p class="small">Uses household address.</p>`;
-        } else if (mode === "non-resident") {
-            addressDiv.innerHTML = `
-        <label>City</label><input type="text" name="res_${index}_nr_city" required>
-        <label>Street</label><input type="text" name="res_${index}_nr_street" required>
-        <label>Building</label><input type="text" name="res_${index}_nr_building" required>
-      `;
-        } else {
-            addressDiv.innerHTML = `
-        <label>Country</label><select name="res_${index}_exp_country"></select>
-        <label>City</label><input type="text" name="res_${index}_exp_city" required>
-        <label>Street</label><input type="text" name="res_${index}_exp_street" required>
-        <label>Building</label><input type="text" name="res_${index}_exp_building" required>
-      `;
-            populateCountries(addressDiv.querySelector(`select[name="res_${index}_exp_country"]`));
-        }
-    }
-    residencyRadios.forEach(r => r.addEventListener("change", e => renderAddress(e.target.value)));
-    renderAddress("resident");
-
-    // profession logic
-    const professionRadios = container.querySelectorAll(`input[name="res_${index}_profession"]`);
-    const workDiv = container.querySelector(".work-address");
-    professionRadios.forEach(r => {
-        r.addEventListener("change", () => {
-            if (r.checked && (r.value === "employee" || r.value === "business")) {
-                workDiv.style.display = "block";
-            } else if (r.checked && r.value === "none") {
-                workDiv.style.display = "none";
-            }
-        });
-    });
-
-    return container;
-}
-
-/* ===== Terrains ===== */
-function createTerrainCard(idx) {
-    const div = document.createElement("div");
-    div.className = "terrain";
-    div.dataset.idx = idx;
-    div.innerHTML = `
-    <h3>Terrain ${idx}</h3>
-    <label>Terrain ID (optional)</label><input type="text" name="terrain_${idx}_id">
-    <label>Plantation Type</label><input type="text" name="terrain_${idx}_type" required>
-    <label>Number of Trees</label><input type="number" name="terrain_${idx}_trees" min="0" step="1" required>
-    <button type="button" class="remove-terrain">Remove</button>
-  `;
-    div.querySelector(".remove-terrain").addEventListener("click", () => {
-        terrainsContainer.removeChild(div);
-    });
-    return div;
-}
-
-/* ===== Collect payload for Formspree ===== */
-function collectPayload() {
-    const payload = {};
-    payload.household = {
-        numResidents: Number(numResidentsEl.value || 0),
-        country: houseCountryEl.value || '',
-        city: document.getElementById('houseCity').value || '',
-        street: document.getElementById('houseStreet').value || '',
-        building: document.getElementById('houseBuilding').value || ''
-    };
-
-    payload.residents = [];
-    const residentCards = Array.from(residentsContainer.querySelectorAll('.resident'));
-    residentCards.forEach(rc => {
-        const i = rc.dataset.index;
-        const r = {
-            first: rc.querySelector(`input[name="res_${i}_first"]`).value,
-            father: rc.querySelector(`input[name="res_${i}_father"]`).value,
-            last: rc.querySelector(`input[name="res_${i}_last"]`).value,
-            mother_first: rc.querySelector(`input[name="res_${i}_mother_first"]`).value,
-            mother_last: rc.querySelector(`input[name="res_${i}_mother_last"]`).value,
-            dob: rc.querySelector(`input[name="res_${i}_dob"]`).value,
-            registry: rc.querySelector(`input[name="res_${i}_reg"]`).value,
-            registry_city: rc.querySelector(`input[name="res_${i}_reg_city"]`).value,
-            sex: rc.querySelector(`select[name="res_${i}_sex"]`).value,
-            landline: rc.querySelector(`input[name="res_${i}_landline"]`).value,
-            cellphone: rc.querySelector(`input[name="res_${i}_cell"]`).value,
-            status: rc.querySelector(`input[name="res_${i}_status"]:checked`).value
-        };
-
-        if (r.status === "non-resident") {
-            r.address = {
-                country: payload.household.country,
-                city: rc.querySelector(`input[name="res_${i}_nr_city"]`).value,
-                street: rc.querySelector(`input[name="res_${i}_nr_street"]`).value,
-                building: rc.querySelector(`input[name="res_${i}_nr_building"]`).value
-            };
-        } else if (r.status === "expatriate") {
-            r.address = {
-                country: rc.querySelector(`select[name="res_${i}_exp_country"]`).value,
-                city: rc.querySelector(`input[name="res_${i}_exp_city"]`).value,
-                street: rc.querySelector(`input[name="res_${i}_exp_street"]`).value,
-                building: rc.querySelector(`input[name="res_${i}_exp_building"]`).value
-            };
-        } else {
-            r.address = { ...payload.household };
-        }
-
-        r.profession = rc.querySelector(`input[name="res_${i}_profession"]:checked`).value;
-        r.work = {
-            country: (rc.querySelector(`select[name="res_${i}_work_country"]`)?.value) || '',
-            city: (rc.querySelector(`input[name="res_${i}_work_city"]`)?.value) || '',
-            street: (rc.querySelector(`input[name="res_${i}_work_street"]`)?.value) || ''
-        };
-
-        r.medical = {
-  blood: rc.querySelector(`select[name="res_${i}_blood"]`).value,
-  donate: rc.querySelector(`select[name="res_${i}_can_donate"]`).value,
-  chronic: Array.from(rc.querySelectorAll(`input[name="res_${i}_chronic"]:checked`))
-                .map(cb => cb.value)
-};
-
-        payload.residents.push(r);
-    });
-
-    payload.terrains = [];
-    const terrainCards = Array.from(terrainsContainer.querySelectorAll('.terrain'));
-    terrainCards.forEach(tc => {
-        const idx = tc.dataset.idx;
-        payload.terrains.push({
-            id: tc.querySelector(`input[name="terrain_${idx}_id"]`).value,
-            type: tc.querySelector(`input[name="terrain_${idx}_type"]`).value,
-            trees: Number(tc.querySelector(`input[name="terrain_${idx}_trees"]`).value || 0)
-        });
-    });
-
-    return payload;
-}
-
-/* ===== Wire up ===== */
-populateNumResidents();
-populateCountries(houseCountryEl);
-
-numResidentsEl.addEventListener('change', () => {
-    residentsContainer.innerHTML = '';
-    const n = Number(numResidentsEl.value || 0);
-    for (let i = 1; i <= n; i++) {
-        residentsContainer.appendChild(createResidentCard(i));
-    }
+addTerrainBtn.addEventListener('click', ()=>{
+  const node = tTpl.content.cloneNode(true);
+  node.querySelector('.remove-terrain').addEventListener('click', ()=> node.querySelector('.terrain-card').remove());
+  terrainsWrap.appendChild(node);
 });
 
-let terrainCount = 0;
-addTerrainBtn.addEventListener('click', () => {
-    terrainCount++;
-    terrainsContainer.appendChild(createTerrainCard(terrainCount));
+// ————————————————————————————————————————————————
+// الأمراض المزمنة: "لا يوجد" يلغي البقية والعكس
+// ————————————————————————————————————————————————
+document.addEventListener('change', e=>{
+  if(e.target.closest('.chronic-wrap')){
+    const wrap = e.target.closest('.chronic-wrap');
+    if(e.target.classList.contains('chronic-none') && e.target.checked){
+      wrap.querySelectorAll('input[type="checkbox"]:not(.chronic-none)').forEach(cb=>cb.checked=false);
+    }else if(!e.target.classList.contains('chronic-none')){
+      const none = wrap.querySelector('.chronic-none');
+      if(none) none.checked = false;
+    }
+  }
 });
 
-surveyForm.addEventListener('submit', (e) => {
-    // Native validation first
-    if (!surveyForm.checkValidity()) {
-        surveyForm.reportValidity();
-        e.preventDefault();
-        return;
-    }
-    // Build JSON payload for Formspree
-    const payload = collectPayload();
-    payloadField.value = JSON.stringify(payload, null, 2);
-    // Let the form submit to Formspree
+// ————————————————————————————————————————————————
+// تحقق أساسي قبل الإرسال
+// ————————————————————————————————————————————————
+form.addEventListener('submit', (e)=>{
+  if(!householdCount.value){
+    e.preventDefault();
+    alert('يرجى اختيار عدد المقيمين.');
+    return;
+  }
+  if(!form.checkValidity()){
+    e.preventDefault();
+    form.reportValidity();
+  }
 });
