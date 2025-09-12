@@ -1,0 +1,32 @@
+:root{
+  --bg:#f9fafb;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --text:#1f2937;
+  --accent:#3b82f6;
+  --accent-2:#2563eb;
+  --danger:#ef4444;
+  --input:#f3f4f6;
+  --ring:#d1d5db;
+}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;padding:12px;display:flex;justify-content:center}
+.container{width:min(900px,100%)}
+.header{margin-bottom:20px}
+h1{margin:0;font-size:24px}
+.subtitle{color:var(--muted);font-size:14px}
+form{background:var(--card);border:1px solid var(--ring);border-radius:16px;padding:16px;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+fieldset{border:1px solid var(--ring);border-radius:12px;margin:12px 0;padding:12px}
+legend{color:var(--accent);font-weight:700;font-size:15px}
+.grid{display:grid;gap:12px}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:720px){.grid-2{grid-template-columns:1fr}}
+label{font-weight:600;font-size:14px;margin-bottom:4px;display:block}
+input,select,textarea{width:100%;border:1px solid var(--ring);background:var(--input);color:var(--text);padding:10px;border-radius:8px;font-size:14px}
+.btn{border:none;border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:14px}
+.btn-accent{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff}
+.btn-ghost{border:1px dashed var(--ring);background:transparent;color:var(--text)}
+.btn-danger{border:1px solid var(--danger);background:transparent;color:var(--danger)}
+.resident-card,.terrain-card,.job-card{border:1px solid var(--ring);border-radius:12px;padding:12px;background:var(--card);margin-top:10px}
+.footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:16px}
+.note{color:var(--muted);font-size:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--ring);background:var(--input);padding:6px 10px;border-radius:999px;cursor:pointer;font-size:14px}

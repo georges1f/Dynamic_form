@@ -4,116 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>نموذج إحصاء سكان القرية</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#0f172a;         /* slate-900 */
-      --card:#111827;       /* gray-900 */
-      --muted:#94a3b8;      /* slate-400 */
-      --text:#e5e7eb;       /* gray-200 */
-      --accent:#22d3ee;     /* cyan-400 */
-      --accent-2:#06b6d4;   /* cyan-500 */
-      --danger:#ef4444;     /* red-500 */
-      --ok:#22c55e;         /* green-500 */
-      --input:#1f2937;      /* gray-800 */
-      --ring:#334155;       /* slate-700 */
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;background:linear-gradient(180deg,var(--bg),#020617);
-      color:var(--text);font-family:'Cairo',system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial;
-      line-height:1.6;display:flex;justify-content:center;padding:32px
-    }
-    .container{width:min(1100px,100%);}
-    .header{
-      display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px
-    }
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{
-      width:48px;height:48px;border-radius:16px;background:radial-gradient(120% 120% at 30% 30%,#0ea5e9 0,#22d3ee 40%,#0ea5e9 70%,#0891b2 100%);
-      box-shadow:0 10px 30px rgba(34,211,238,.35), inset 0 0 30px rgba(255,255,255,.15);
-    }
-    h1{margin:0;font-size:clamp(22px,3.2vw,32px)}
-    .subtitle{color:var(--muted);margin-top:4px}
-
-    form{
-      background:linear-gradient(180deg,rgba(2,6,23,.6),rgba(2,6,23,.85));
-      border:1px solid var(--ring);border-radius:20px;padding:20px;backdrop-filter:blur(6px);
-      box-shadow:0 20px 50px rgba(2,6,23,.6), inset 0 1px 0 rgba(255,255,255,.04)
-    }
-    fieldset{border:1px solid var(--ring);border-radius:16px;margin:16px 0;padding:16px}
-    legend{padding:0 8px;color:var(--accent);font-weight:700}
-
-    .grid{display:grid;gap:12px}
-    .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-    .grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
-    @media (max-width:900px){.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media (max-width:720px){.grid-3,.grid-2,.grid-4{grid-template-columns:1fr}}
-
-    label{display:block;font-weight:600;margin-bottom:6px}
-    .hint{font-weight:400;color:var(--muted);font-size:12px}
-
-    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, textarea{
-      width:100%;appearance:none;border:1px solid var(--ring);background:var(--input);color:var(--text);
-      padding:10px 12px;border-radius:12px;outline:none;font-size:15px;
-    }
-    input:focus, select:focus, textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.2)}
-
-    .radio-group, .choice-group{display:flex;flex-wrap:wrap;gap:10px}
-    .chip{
-      display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ring);background:var(--input);
-      padding:8px 12px;border-radius:999px;cursor:pointer;user-select:none
-    }
-    .chip input{accent-color:var(--accent-2)}
-
-    .section-title{display:flex;align-items:center;justify-content:space-between}
-    .btn{border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
-    .btn-accent{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#00323a}
-    .btn-ghost{background:transparent;border:1px dashed var(--ring);color:var(--text)}
-    .btn-danger{background:transparent;border:1px solid var(--danger);color:var(--danger)}
-
-    .resident-card, .terrain-card{border:1px solid var(--ring);border-radius:16px;padding:16px;background:rgba(15,23,42,.5)}
-    .divider{height:1px;background:var(--ring);margin:12px 0}
-
-    .footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px}
-    .req{color:var(--danger);margin-inline-start:6px}
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-
-    .note{color:var(--muted);font-size:13px}
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
     <header class="header">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1>نموذج إحصاء سكان القرية</h1>
-          <div class="subtitle">يُعبّأ من قِبل ربّ الأسرة، وترسل البيانات عبر Formspree</div>
-        </div>
-      </div>
+      <h1>نموذج إحصاء سكان القرية</h1>
+      <div class="subtitle">يُعبّأ من قِبل ربّ الأسرة، وترسل البيانات عبر Formspree</div>
     </header>
 
     <form id="censusForm" action="https://formspree.io/f/xxxxxxx" method="POST" novalidate>
-      <input type="hidden" name="_subject" value="إحصاء سكان القرية — استجابة جديدة" />
-      <input type="hidden" name="_language" value="ar" />
-
-      <!-- معلومات الأسرة -->
       <fieldset>
         <legend>معلومات الأسرة</legend>
-        <div class="grid grid-4">
+        <div class="grid grid-2">
           <div>
-            <label>عدد المقيمين في الأسرة <span class="req">*</span></label>
+            <label>عدد المقيمين <span class="req">*</span></label>
             <select id="householdCount" name="household[count]" required>
               <option value="" disabled selected>اختر العدد</option>
-              <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
-              <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+              <option>1</option><option>2</option><option>3</option>
+              <option>4</option><option>5</option><option>6</option>
+              <option>7</option><option>8</option><option>9</option><option>10</option>
             </select>
-            <div class="hint">الحد الأقصى 10 أشخاص</div>
           </div>
           <div>
             <label>الدولة <span class="req">*</span></label>
@@ -121,185 +33,85 @@
           </div>
           <div>
             <label>المدينة <span class="req">*</span></label>
-            <input type="text" id="householdCity" name="household[city]" placeholder="مثال: بيروت" required />
+            <input type="text" id="householdCity" name="household[city]" required />
           </div>
           <div>
             <label>الشارع <span class="req">*</span></label>
-            <input type="text" id="householdStreet" name="household[street]" placeholder="اسم الشارع" required />
+            <input type="text" id="householdStreet" name="household[street]" required />
           </div>
           <div>
             <label>المبنى <span class="req">*</span></label>
-            <input type="text" id="householdBuilding" name="household[building]" placeholder="اسم أو رقم المبنى" required />
+            <input type="text" id="householdBuilding" name="household[building]" required />
           </div>
         </div>
       </fieldset>
 
-      <!-- المقيمون -->
       <fieldset>
-        <legend>بيانات المقيمين</legend>
-        <div id="residentsWrap" class="grid" aria-live="polite"></div>
+        <legend>المقيمون</legend>
+        <div id="residentsWrap" class="grid"></div>
       </fieldset>
 
-      <!-- الأملاك الزراعية -->
       <fieldset>
-        <legend>تفاصيل الأملاك الزراعية (اختياري)</legend>
-        <div class="section-title">
-          <div class="note">يمكن إضافة أكثر من عقار زراعي</div>
-          <button class="btn btn-ghost" type="button" id="addTerrainBtn">+ إضافة عقار</button>
-        </div>
-        <div id="terrainsWrap" class="grid" aria-live="polite"></div>
+        <legend>الأراضي الزراعية (اختياري)</legend>
+        <button class="btn btn-ghost" type="button" id="addTerrainBtn">+ إضافة عقار</button>
+        <div id="terrainsWrap" class="grid"></div>
       </fieldset>
 
       <div class="footer">
-        <div class="note">بالضغط على "إرسال"، فأنت توافق على إرسال هذه البيانات لغرض الإحصاء فقط.</div>
+        <div class="note">باختيار "إرسال"، فأنت توافق على استخدام البيانات لأغراض الإحصاء فقط.</div>
         <button type="submit" class="btn btn-accent">إرسال</button>
       </div>
     </form>
   </div>
 
+  <!-- قالب المقيم -->
   <template id="residentTemplate">
     <div class="resident-card">
       <div class="section-title">
-        <h3 style="margin:0">المقيم <span class="res-index">#</span></h3>
-        <button type="button" class="btn btn-danger remove-resident" title="حذف المقيم">حذف</button>
+        <h3>مقيم <span class="res-index">#</span></h3>
+        <button type="button" class="btn btn-danger remove-resident">حذف</button>
       </div>
-      <div class="divider"></div>
-
-      <div class="grid grid-3">
-        <div>
-          <label>الاسم <span class="req">*</span></label>
-          <input type="text" name="__NAME__" required placeholder="الاسم الأول" />
-        </div>
-        <div>
-          <label>اسم الأب <span class="req">*</span></label>
-          <input type="text" name="__FATHER__" required placeholder="اسم الأب" />
-        </div>
-        <div>
-          <label>الشهرة <span class="req">*</span></label>
-          <input type="text" name="__LAST__" required placeholder="اسم العائلة" />
+      <div class="grid grid-2">
+        <div><label>الاسم</label><input type="text" name="__NAME__" required></div>
+        <div><label>اسم الأب</label><input type="text" name="__FATHER__" required></div>
+        <div><label>الشهرة</label><input type="text" name="__LAST__" required></div>
+      </div>
+      <div class="grid grid-2">
+        <div><label>اسم الأم</label><input type="text" name="__MOTHER_NAME__" required></div>
+        <div><label>شهرة الأم</label><input type="text" name="__MOTHER_LAST__" required></div>
+      </div>
+      <div class="grid grid-2">
+        <div><label>تاريخ الولادة</label><input type="date" name="__DOB__" required></div>
+        <div><label>الجنس</label>
+          <select name="__SEX__" required>
+            <option disabled selected>اختر</option><option>ذكر</option><option>أنثى</option>
+          </select>
         </div>
       </div>
+      <div class="grid grid-2">
+        <div><label>رقم السجل</label><input type="text" name="__REG_NO__" required></div>
+        <div><label>مكان السجل</label><input type="text" name="__REG_LOC__" required></div>
+      </div>
+      <div class="grid grid-2">
+        <div><label>الهاتف الأرضي</label><input type="tel" name="__TEL_LAND__"></div>
+        <div><label>الهاتف الخلوي</label><input type="tel" name="__TEL_MOBILE__" required></div>
+      </div>
 
+      <!-- المهن -->
+      <div class="jobs-section">
+        <div class="section-title">
+          <h4>المهن</h4>
+          <button type="button" class="btn btn-ghost add-job">+ إضافة مهنة</button>
+        </div>
+        <div class="jobs-wrap"></div>
+      </div>
+
+      <!-- الأمراض -->
       <div class="grid grid-2">
         <div>
-          <label>اسم الأم <span class="req">*</span></label>
-          <input type="text" name="__MOTHER_NAME__" required placeholder="اسم الأم" />
-        </div>
-        <div>
-          <label>شهرة الأم <span class="req">*</span></label>
-          <input type="text" name="__MOTHER_LAST__" required placeholder="شهرة الأم" />
-        </div>
-      </div>
-
-      <div class="grid grid-4">
-        <div>
-          <label>تاريخ الولادة <span class="req">*</span></label>
-          <input type="date" name="__DOB__" required />
-        </div>
-        <div>
-          <label>رقم السجل <span class="req">*</span></label>
-          <input type="text" name="__REG_NO__" required />
-        </div>
-        <div>
-          <label>مكان السجل <span class="req">*</span></label>
-          <input type="text" name="__REG_LOC__" required />
-        </div>
-        <div>
-          <label>الجنس <span class="req">*</span></label>
-          <select name="__SEX__" required>
-            <option value="" disabled selected>اختر</option>
-            <option value="ذكر">ذكر</option>
-            <option value="أنثى">أنثى</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="grid grid-3">
-        <div>
-          <label>الهاتف الأرضي (اختياري)</label>
-          <input type="tel" name="__TEL_LAND__" pattern="[0-9+()\-\s]{6,}" placeholder="مثال: 01 234 567" />
-        </div>
-        <div>
-          <label>الهاتف الخلوي <span class="req">*</span></label>
-          <input type="tel" name="__TEL_MOBILE__" pattern="[0-9+()\-\s]{6,}" required placeholder="مثال: 70 123 456" />
-        </div>
-        <div>
-          <label>صفة الإقامة <span class="req">*</span></label>
-          <div class="radio-group">
-            <label class="chip"><input type="radio" name="__RES_STATUS__" value="مقيم" required /> مقيم</label>
-            <label class="chip"><input type="radio" name="__RES_STATUS__" value="غير مقيم" required /> غير مقيم</label>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid" style="margin-top:4px">
-        <div class="res-address-note note">إن كان "مقيمًا" فسيتم استخدام عنوان الأسرة تلقائيًا. إن كان "غير مقيم" اختر: داخل البلد أم مغترب.</div>
-        <div class="radio-group">
-          <label class="chip"><input type="radio" name="__NR_SCOPE__" value="داخل البلد" /> داخل البلد</label>
-          <label class="chip"><input type="radio" name="__NR_SCOPE__" value="مغترب" /> مغترب</label>
-        </div>
-        <div class="grid grid-4 res-addr">
-          <div>
-            <label>الدولة <span class="req res-country-req">*</span></label>
-            <select name="__RES_COUNTRY__" class="country-select"></select>
-          </div>
-          <div>
-            <label>المدينة <span class="req res-city-req">*</span></label>
-            <input type="text" name="__RES_CITY__" />
-          </div>
-          <div>
-            <label>الشارع <span class="req res-street-req">*</span></label>
-            <input type="text" name="__RES_STREET__" />
-          </div>
-          <div>
-            <label>المبنى <span class="req res-bldg-req">*</span></label>
-            <input type="text" name="__RES_BUILDING__" />
-          </div>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <!-- المهنة -->
-      <div class="grid grid-3">
-        <div>
-          <label>الوضع المهني <span class="req">*</span></label>
-          <select name="__JOB_STATUS__" required>
-            <option value="" disabled selected>اختر</option>
-            <option>بدون مهنة</option>
-            <option>موظف</option>
-            <option>صاحب عمل / مهنة حرة</option>
-          </select>
-        </div>
-        <div>
-          <label>نوع المهنة</label>
-          <input type="text" name="__JOB_TITLE__" placeholder="مثال: مهندس مدني" />
-        </div>
-        <div>
-          <label>جهة العمل</label>
-          <input type="text" name="__JOB_EMPLOYER__" placeholder="اسم الشركة / المؤسسة" />
-        </div>
-      </div>
-      <div class="grid grid-2 job-loc">
-        <div>
-          <label>دولة العمل</label>
-          <select name="__JOB_COUNTRY__" class="country-select"></select>
-        </div>
-        <div>
-          <label>مدينة العمل</label>
-          <input type="text" name="__JOB_CITY__" />
-        </div>
-      </div>
-      <div class="note">ستظهر حقول المهنة تلقائيًا إذا كان الوضع "موظف" أو "صاحب عمل".</div>
-
-      <div class="divider"></div>
-
-      <!-- طبي -->
-      <div class="grid grid-4">
-        <div>
-          <label>فصيلة الدم <span class="req">*</span></label>
-          <select name="__BLOOD__" required>
-            <option value="" disabled selected>اختر</option>
+          <label>فصيلة الدم</label>
+          <select name="__BLOOD__">
+            <option disabled selected>اختر</option>
             <option>O+</option><option>O-</option>
             <option>A+</option><option>A-</option>
             <option>B+</option><option>B-</option>
@@ -307,257 +119,60 @@
           </select>
         </div>
         <div>
-          <label>قابل للتبرع؟ <span class="req">*</span></label>
-          <div class="radio-group">
-            <label class="chip"><input type="radio" name="__DONATE__" value="نعم" required /> نعم</label>
-            <label class="chip"><input type="radio" name="__DONATE__" value="لا" required /> لا</label>
-          </div>
-        </div>
-        <div>
           <label>أمراض مزمنة</label>
-          <select name="__CHRONIC__" multiple size="4" aria-describedby="chronicHelp">
-            <option value="لا يوجد">لا يوجد</option>
-            <option>سكري</option>
-            <option>ضغط دم</option>
-            <option>سرطان</option>
-            <option>مشاكل قلب</option>
-            <option>ربو</option>
-            <option>أمراض كلوية</option>
-            <option>أخرى</option>
-          </select>
-          <div id="chronicHelp" class="hint">اضغط مع الاستمرار على Ctrl/⌘ للاختيار المتعدد</div>
-        </div>
-        <div>
-          <label>تفاصيل أخرى (اختياري)</label>
-          <input type="text" name="__MED_NOTES__" placeholder="ملاحظات طبية إضافية" />
+          <div class="chronic-wrap">
+            <label class="chip"><input type="checkbox" value="لا يوجد" class="chronic-none"> لا يوجد</label>
+            <label class="chip"><input type="checkbox" value="سكري"> سكري</label>
+            <label class="chip"><input type="checkbox" value="ضغط دم"> ضغط دم</label>
+            <label class="chip"><input type="checkbox" value="سرطان"> سرطان</label>
+            <label class="chip"><input type="checkbox" value="مشاكل قلب"> مشاكل قلب</label>
+            <label class="chip"><input type="checkbox" value="ربو"> ربو</label>
+            <label class="chip"><input type="checkbox" value="أمراض كلوية"> أمراض كلوية</label>
+          </div>
         </div>
       </div>
     </div>
   </template>
 
+  <!-- قالب المهنة -->
+  <template id="jobTemplate">
+    <div class="job-card">
+      <div class="grid grid-2">
+        <div>
+          <label>الوضع المهني</label>
+          <select name="__JOB_STATUS__" required>
+            <option disabled selected>اختر</option>
+            <option>بدون مهنة</option>
+            <option>موظف</option>
+            <option>صاحب عمل</option>
+          </select>
+        </div>
+        <div><label>نوع المهنة</label><input type="text" name="__JOB_TITLE__"></div>
+        <div><label>جهة العمل</label><input type="text" name="__JOB_EMPLOYER__"></div>
+      </div>
+      <div class="grid grid-2">
+        <div><label>دولة العمل</label><select name="__JOB_COUNTRY__" class="country-select"></select></div>
+        <div><label>مدينة العمل</label><input type="text" name="__JOB_CITY__"></div>
+      </div>
+      <button type="button" class="btn btn-danger remove-job">حذف المهنة</button>
+    </div>
+  </template>
+
+  <!-- قالب العقار -->
   <template id="terrainTemplate">
     <div class="terrain-card">
       <div class="section-title">
-        <h4 style="margin:0">عقار زراعي</h4>
+        <h4>عقار</h4>
         <button type="button" class="btn btn-danger remove-terrain">حذف</button>
       </div>
-      <div class="grid grid-4" style="margin-top:10px">
-        <div>
-          <label>رقم العقار (اختياري)</label>
-          <input type="text" name="terrains[__TINDEX__][id]" placeholder="إن وجد" />
-        </div>
-        <div>
-          <label>نوع الزراعة <span class="req">*</span></label>
-          <input type="text" name="terrains[__TINDEX__][type]" required placeholder="مثال: زيتون" />
-        </div>
-        <div>
-          <label>عدد الأشجار <span class="req">*</span></label>
-          <input type="number" name="terrains[__TINDEX__][trees]" min="0" step="1" required />
-        </div>
-        <div>
-          <label>موقع العقار</label>
-          <input type="text" name="terrains[__TINDEX__][location]" placeholder="المنطقة / وصف مختصر" />
-        </div>
+      <div class="grid grid-2">
+        <div><label>رقم العقار</label><input type="text" name="terrains[__TINDEX__][id]"></div>
+        <div><label>نوع الزراعة</label><input type="text" name="terrains[__TINDEX__][type]"></div>
+        <div><label>عدد الأشجار</label><input type="number" name="terrains[__TINDEX__][trees]"></div>
       </div>
     </div>
   </template>
 
-  <script>
-    // —————————————— قائمة الدول ——————————————
-    const COUNTRIES = [
-      "أفغانستان","ألبانيا","الجزائر","أندورا","أنغولا","أنتيغوا وبربودا","الأرجنتين","أرمينيا","أستراليا","النمسا","أذربيجان",
-      "الباهاما","البحرين","بنغلاديش","بربادوس","بيلاروس","بلجيكا","بليز","بنين","بوتان","بوليفيا","البوسنة والهرسك","بوتسوانا","البرازيل","بروناي","بلغاريا","بوركينا فاسو","بوروندي",
-      "كمبوديا","الكاميرون","كندا","الرأس الأخضر","جمهورية إفريقيا الوسطى","تشاد","تشيلي","الصين","كولومبيا","جزر القمر","الكونغو (جمهورية الكونغو)","الكونغو الديمقراطية","كوستاريكا","كوت ديفوار","كرواتيا","كوبا","قبرص","التشيك","الدنمارك","جيبوتي","دومينيكا","جمهورية الدومينيكان",
-      "الإكوادور","مصر","السلفادور","غينيا الاستوائية","إريتريا","إستونيا","إسواتيني","إثيوبيا","فيجي","فنلندا","فرنسا","الغابون","غامبيا","جورجيا","ألمانيا","غانا","اليونان","غرينادا","غواتيمالا","غينيا","غينيا‑بيساو","غيانا","هايتي","هندوراس","هنغاريا","آيسلندا","الهند","إندونيسيا","إيران","العراق","إيرلندا","إسرائيل","إيطاليا","جامايكا","اليابان","الأردن","كازاخستان","كينيا","كيريباتي","الكويت","قيرغيزستان","لاوس","لاتفيا","لبنان","ليسوتو","ليبيريا","ليبيا","ليختنشتاين","ليتوانيا","لوكسمبورغ","مدغشقر","مالاوي","ماليزيا","المالديف","مالي","مالطا","جزر مارشال","موريتانيا","موريشيوس","المكسيك","ميكرونيزيا","مولدوفا","موناكو","منغوليا","الجبل الأسود","المغرب","موزمبيق","ميانمار","ناميبيا","ناورو","نيبال","هولندا","نيوزيلندا","نيكاراغوا","النيجر","نيجيريا","كوريا الشمالية","مقدونيا الشمالية","النرويج","عمان","باكستان","بالاو","فلسطين","بنما","بابوا غينيا الجديدة","باراغواي","بيرو","الفلبين","بولندا","البرتغال","قطر","رومانيا","روسيا","رواندا","سانت كيتس ونيفيس","سانت لوسيا","سانت فنسنت والغرينادين","ساموا","سان مارينو","ساو تومي وبرينسيب","السعودية","السنغال","صربيا","سيشل","سيرا ليون","سنغافورة","سلوفاكيا","سلوفينيا","جزر سليمان","الصومال","جنوب أفريقيا","كوريا الجنوبية","جنوب السودان","إسبانيا","سريلانكا","السودان","سورينام","السويد","سويسرا","سوريا","طاجيكستان","تنزانيا","تايلاند","تيمور الشرقية","توغو","تونغا","ترينيداد وتوباغو","تونس","تركيا","تركمانستان","توفالو","أوغندا","أوكرانيا","الإمارات","المملكة المتحدة","الولايات المتحدة","أوروغواي","أوزبكستان","فانواتو","فنزويلا","فيتنام","اليمن","مدينة الفاتيكان"
-    ];
-
-    const form = document.getElementById('censusForm');
-    const residentsWrap = document.getElementById('residentsWrap');
-    const terrainsWrap = document.getElementById('terrainsWrap');
-    const addTerrainBtn = document.getElementById('addTerrainBtn');
-    const householdCount = document.getElementById('householdCount');
-
-    // تعبئة قائمة الدول العامة
-    function fillCountries(select){
-      select.innerHTML = '<option value="" disabled selected>اختر الدولة</option>' + COUNTRIES.map(c=>`<option>${c}</option>`).join('');
-    }
-    fillCountries(document.getElementById('householdCountry'));
-
-    // إنشاء مقيم جديد
-    const rTpl = document.getElementById('residentTemplate');
-    let residentCounter = 0;
-
-    function createResidentCard(index){
-      const clone = rTpl.content.cloneNode(true);
-      const card = clone.querySelector('.resident-card');
-      card.dataset.index = index;
-      card.querySelector('.res-index').textContent = index+1;
-
-      // ضبط أسماء الحقول لتكون قابلة للتجميع في Formspree
-      const mapNames = [
-        ['__NAME__', `residents[${index}][first_name]`],
-        ['__FATHER__', `residents[${index}][father_name]`],
-        ['__LAST__', `residents[${index}][last_name]`],
-        ['__MOTHER_NAME__', `residents[${index}][mother_first]`],
-        ['__MOTHER_LAST__', `residents[${index}][mother_last]`],
-        ['__DOB__', `residents[${index}][dob]`],
-        ['__REG_NO__', `residents[${index}][registry_no]`],
-        ['__REG_LOC__', `residents[${index}][registry_place]`],
-        ['__SEX__', `residents[${index}][sex]`],
-        ['__TEL_LAND__', `residents[${index}][tel_landline]`],
-        ['__TEL_MOBILE__', `residents[${index}][tel_mobile]`],
-        ['__RES_STATUS__', `residents[${index}][residency_status]`],
-        ['__NR_SCOPE__', `residents[${index}][non_resident_scope]`],
-        ['__RES_COUNTRY__', `residents[${index}][address][country]`],
-        ['__RES_CITY__', `residents[${index}][address][city]`],
-        ['__RES_STREET__', `residents[${index}][address][street]`],
-        ['__RES_BUILDING__', `residents[${index}][address][building]`],
-        ['__JOB_STATUS__', `residents[${index}][job][status]`],
-        ['__JOB_TITLE__', `residents[${index}][job][title]`],
-        ['__JOB_EMPLOYER__', `residents[${index}][job][employer]`],
-        ['__JOB_COUNTRY__', `residents[${index}][job][country]`],
-        ['__JOB_CITY__', `residents[${index}][job][city]`],
-        ['__BLOOD__', `residents[${index}][medical][blood]`],
-        ['__DONATE__', `residents[${index}][medical][can_donate]`],
-        ['__CHRONIC__', `residents[${index}][medical][chronic]`],
-        ['__MED_NOTES__', `residents[${index}][medical][notes]`],
-      ];
-      const allInputs = card.querySelectorAll('input, select, textarea');
-      allInputs.forEach(el=>{
-        mapNames.forEach(([k,v])=>{ if(el.name===k){ el.name=v; } });
-      });
-
-      // تعبئة قوائم الدول داخل بطاقة المقيم
-      card.querySelectorAll('select.country-select').forEach(fillCountries);
-
-      // منطق العنوان حسب صفة الإقامة
-      const resStatus = card.querySelectorAll(`input[name="residents[${index}][residency_status]"]`);
-      const nrScope = card.querySelectorAll(`input[name="residents[${index}][non_resident_scope]"]`);
-      const addrWrap = card.querySelector('.res-addr');
-      const countrySel = addrWrap.querySelector('select');
-      const [cityInp, streetInp, bldgInp] = addrWrap.querySelectorAll('input');
-
-      function setAddrRequirements({show=false, requireCountry=false}){
-        addrWrap.style.display = show ? 'grid' : 'none';
-        countrySel.required = requireCountry;
-        countrySel.parentElement.querySelector('.res-country-req').style.visibility = requireCountry? 'visible':'hidden';
-        [cityInp, streetInp, bldgInp].forEach(el=> el.required = show);
-        ['.res-city-req','.res-street-req','.res-bldg-req'].forEach(sel=>{
-          const span = addrWrap.querySelector(sel); if(span) span.style.visibility = show? 'visible':'hidden';
-        });
-      }
-      // افتراضي: مخفي
-      setAddrRequirements({show:false, requireCountry:false});
-
-      resStatus.forEach(r=>r.addEventListener('change', ()=>{
-        if(r.value === 'مقيم' && r.checked){
-          // استخدم عنوان الأسرة — أخفِ المدخلات
-          setAddrRequirements({show:false, requireCountry:false});
-          nrScope.forEach(n=>{ n.checked = false; });
-          countrySel.value = '';
-          cityInp.value = streetInp.value = bldgInp.value = '';
-        }
-        if(r.value === 'غير مقيم' && r.checked){
-          // أظهر خيار النطاق وانتظر الاختيار
-          // لا شيء هنا — إلى أن يحدد داخل البلد/مغترب
-        }
-      }));
-
-      nrScope.forEach(n=>n.addEventListener('change', ()=>{
-        const chosen = [...nrScope].find(x=>x.checked)?.value;
-        if(chosen === 'داخل البلد'){
-          setAddrRequirements({show:true, requireCountry:false});
-          countrySel.value = document.getElementById('householdCountry').value; // نفس الدولة
-        } else if(chosen === 'مغترب'){
-          setAddrRequirements({show:true, requireCountry:true});
-          countrySel.value = '';
-        }
-      }));
-
-      // منطق المهنة
-      const jobStatusSel = card.querySelector(`select[name="residents[${index}][job][status]"]`);
-      const jobTitle = card.querySelector(`input[name="residents[${index}][job][title]"]`);
-      const jobEmployer = card.querySelector(`input[name="residents[${index}][job][employer]"]`);
-      const jobCountry = card.querySelector(`select[name="residents[${index}][job][country]"]`);
-      const jobCity = card.querySelector(`input[name="residents[${index}][job][city]"]`);
-      const jobLocWrap = card.querySelector('.job-loc');
-
-      function toggleJobFields(){
-        const s = jobStatusSel.value;
-        const active = (s === 'موظف' || s.startsWith('صاحب'));
-        jobTitle.required = active; jobEmployer.required = active; jobCity.required = active; jobCountry.required = active;
-        jobLocWrap.style.display = active ? 'grid' : 'none';
-        if(!active){ jobTitle.value = jobEmployer.value = jobCity.value = ''; jobCountry.value = ''; }
-      }
-      jobStatusSel.addEventListener('change', toggleJobFields);
-      toggleJobFields();
-
-      // إزالة المقيم
-      card.querySelector('.remove-resident').addEventListener('click', ()=>{
-        card.remove();
-        updateResidentIndices();
-      });
-
-      return card;
-    }
-
-    function updateResidentIndices(){
-      const cards = residentsWrap.querySelectorAll('.resident-card');
-      cards.forEach((card,i)=>{
-        card.dataset.index = i;
-        card.querySelector('.res-index').textContent = i+1;
-      });
-    }
-
-    function rebuildResidents(){
-      residentsWrap.innerHTML = '';
-      const n = parseInt(householdCount.value || '0', 10);
-      for(let i=0;i<n;i++){
-        residentsWrap.appendChild(createResidentCard(i));
-      }
-    }
-
-    householdCount.addEventListener('change', rebuildResidents);
-
-    // الأراضي الزراعية
-    const tTpl = document.getElementById('terrainTemplate');
-    let terrainIndex = 0;
-    function addTerrain(){
-      const frag = tTpl.content.cloneNode(true);
-      const card = frag.querySelector('.terrain-card');
-      card.innerHTML = card.innerHTML.replaceAll('__TINDEX__', terrainIndex);
-      card.querySelector('.remove-terrain').addEventListener('click', ()=> card.remove());
-      terrainsWrap.appendChild(card);
-      terrainIndex++;
-    }
-    addTerrainBtn.addEventListener('click', addTerrain);
-
-    // تحقق أساسي قبل الإرسال
-    form.addEventListener('submit', (e)=>{
-      // فرض أن عدد المقيمين محدد ولديه على الأقل بطاقة واحدة
-      if(!householdCount.value){
-        alert('يرجى اختيار عدد المقيمين في الأسرة.');
-        e.preventDefault(); return;
-      }
-      const cards = residentsWrap.querySelectorAll('.resident-card');
-      if(cards.length === 0){
-        alert('يرجى إدخال بيانات المقيمين.');
-        e.preventDefault(); return;
-      }
-      // HTML5 validation
-      if(!form.checkValidity()){
-        e.preventDefault();
-        form.reportValidity();
-      }
-    });
-
-    // تحسينات وصول بسيطة للوحة المفاتيح
-    document.addEventListener('keydown', (e)=>{
-      if((e.ctrlKey || e.metaKey) && e.key.toLowerCase()==='k'){
-        e.preventDefault();
-        document.getElementById('householdCount').focus();
-      }
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
