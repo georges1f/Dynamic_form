@@ -51,6 +51,7 @@ function nameMapResident(card, i){
     ['__RES_STREET__',  `residents[${i}][address][street]`],
     ['__RES_BUILDING__',`residents[${i}][address][building]`],
     ['__BLOOD__',       `residents[${i}][medical][blood]`],
+    ['__DONATE__', `residents[${i}][medical][can_donate]`],
   ];
 
   card.querySelectorAll('input,select,textarea').forEach(el=>{
