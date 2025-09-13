@@ -157,8 +157,8 @@ function addJob(wrap, resIdx){
     ['__JOB_STATUS__',  `residents[${resIdx}][jobs][${count}][status]`],
     ['__JOB_TITLE__',   `residents[${resIdx}][jobs][${count}][title]`],
     ['__JOB_EMPLOYER__',`residents[${resIdx}][jobs][${count}][employer]`],
-    ['__JOB_COUNTRY__', `residents[${resIdx}][jobs][${count}][country]`],
     ['__JOB_CITY__',    `residents[${resIdx}][jobs][${count}][city]`],
+    ['__JOB_ASSOC__', `residents[${resIdx}][jobs][${count}][association_position]`],
   ];
   jobCard.querySelectorAll('input,select').forEach(el=>{
     pairs.forEach(([k,v])=>{ if(el.name === k) el.name = v; });
@@ -170,18 +170,16 @@ function addJob(wrap, resIdx){
   // منطق "بدون مهنة" يخفي/يلغي إلزام موقع العمل ويمسح المدخلات
   const statusSel  = jobCard.querySelector(`select[name="residents[${resIdx}][jobs][${count}][status]"]`);
   const jobLoc     = jobCard.querySelector('.job-loc');
-  const jobCountry = jobCard.querySelector(`select[name="residents[${resIdx}][jobs][${count}][country]"]`);
   const jobCity    = jobCard.querySelector(`input[name="residents[${resIdx}][jobs][${count}][city]"]`);
   const jobTitle   = jobCard.querySelector(`input[name="residents[${resIdx}][jobs][${count}][title]"]`);
   const jobEmployer= jobCard.querySelector(`input[name="residents[${resIdx}][jobs][${count}][employer]"]`);
 
   function toggleJobFields(){
     const v = statusSel.value;
-    const active = (v === 'موظف' || v === 'صاحب عمل');
+    const active = (v === 'موظف' || v === 'مهنة حرة');
     jobLoc.style.display = active ? 'grid' : 'none';
-    [jobCountry, jobCity, jobTitle, jobEmployer].forEach(el => el.required = active);
+    [jobCity, jobTitle, jobEmployer].forEach(el => el.required = active);
     if(!active){
-      jobCountry.value = '';
       jobCity.value    = '';
       jobTitle.value   = '';
       jobEmployer.value= '';

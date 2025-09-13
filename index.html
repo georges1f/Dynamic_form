@@ -33,7 +33,7 @@
           </div>
           <div>
             <label>المدينة <span class="req">*</span></label>
-            <input type="text" id="householdCity" name="household[city]" required />
+            <input type="text" id="householdCity" name="household[city]" value="المعمرية"required />
           </div>
           <div>
             <label>الشارع <span class="req">*</span></label>
@@ -52,7 +52,7 @@
       </fieldset>
 
       <fieldset>
-        <legend>الأراضي الزراعية (اختياري)</legend>
+        <legend>الأراضي الزراعية</legend>
         <button class="btn btn-ghost" type="button" id="addTerrainBtn">+ إضافة عقار</button>
         <div id="terrainsWrap" class="grid"></div>
       </fieldset>
@@ -125,9 +125,9 @@
       <div class="jobs-section">
         <div class="section-title">
           <h4>المهن</h4>
-          <button type="button" class="btn btn-ghost add-job">+ إضافة مهنة</button>
         </div>
         <div class="jobs-wrap"></div>
+        <button type="button" class="btn btn-ghost add-job">+ إضافة مهنة</button>
       </div>
 
       <!-- الأمراض -->
@@ -174,20 +174,28 @@
           <label>الوضع المهني</label>
           <select name="__JOB_STATUS__" required>
             <option disabled selected>اختر</option>
-            <option>بدون مهنة</option>
+            <option>لا يعمل</option>
             <option>موظف</option>
-            <option>صاحب عمل</option>
+            <option>مهنة حرة</option>
           </select>
         </div>
-        <div><label>نوع المهنة</label><input type="text" name="__JOB_TITLE__"></div>
+        <div><label>المهنة</label><input type="text" name="__JOB_TITLE__"></div>
         <div><label>جهة العمل</label><input type="text" name="__JOB_EMPLOYER__"></div>
       </div>
       <div class="grid grid-2 job-loc">
-        <div><label>دولة العمل</label><select name="__JOB_COUNTRY__" class="country-select"></select></div>
-        <div><label>مدينة العمل</label><input type="text" name="__JOB_CITY__"></div>
+        <!-- <div><label>دولة العمل</label><select name="__JOB_COUNTRY__" class="country-select"></select></div> -->
+        <div><label>مكان العمل (المدينة)</label><input type="text" name="__JOB_CITY__"></div>
       </div>
+      <div class="grid">
+  <div>
+    <label>منصبك اذا كنت جزء من جمعية او مؤسسة (اختياري)</label>
+    <input type="text" name="__JOB_ASSOC__" placeholder="مثال: رئيس جمعية، عضو...">
+  </div>
+</div>
       <button type="button" class="btn btn-danger remove-job">حذف المهنة</button>
     </div>
+    
+
   </template>
 
   <!-- قالب العقار -->
