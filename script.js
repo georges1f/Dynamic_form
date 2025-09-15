@@ -209,16 +209,16 @@ householdCount.addEventListener('change', ()=>{
 // تحديث تلقائي لحقول السجل إذا تغيّرت معلومات الأسرة
 // (يُحدّث المقيمين الذين بقيت خاناتهم فارغة فقط)
 // ————————————————————————————————————————————————
-function syncRegistryToResidents(){
-  const cards = residentsWrap.querySelectorAll('.resident-card');
-  cards.forEach((card, idx)=>{
-    const regNo  = card.querySelector(`input[name="residents[${idx}][registry_no]"]`);
-    const regLoc = card.querySelector(`input[name="residents[${idx}][registry_place]"]`);
-    if(regNo && !regNo.value)  regNo.value  = (hhBuilding && hhBuilding.value) || '';
-    if(regLoc && !regLoc.value) regLoc.value = (hhCity && hhCity.value) || '';
-  });
-}
-[hhCity, hhBuilding].forEach(el => el && el.addEventListener('input', syncRegistryToResidents));
+// function syncRegistryToResidents(){
+//   const cards = residentsWrap.querySelectorAll('.resident-card');
+//   cards.forEach((card, idx)=>{
+//     const regNo  = card.querySelector(`input[name="residents[${idx}][registry_no]"]`);
+//     const regLoc = card.querySelector(`input[name="residents[${idx}][registry_place]"]`);
+//     if(regNo && !regNo.value)  regNo.value  = (hhBuilding && hhBuilding.value) || '';
+//     if(regLoc && !regLoc.value) regLoc.value = (hhCity && hhCity.value) || '';
+//   });
+// }
+// [hhCity, hhBuilding].forEach(el => el && el.addEventListener('input', syncRegistryToResidents));
 
 // عند تغيير دولة الأسرة: حدّث دولة عنوان غير المقيم/داخل البلد
 hhCountry && hhCountry.addEventListener('change', ()=>{
@@ -272,3 +272,50 @@ form.addEventListener('submit', (e)=>{
     form.reportValidity();
   }
 });
+
+
+//Autofill suggestions
+// تخزين أسماء الأب والأم المدخلة
+const fatherFSet = new Set();
+const fatherLSet = new Set();
+const motherFSet = new Set();
+const motherLSet = new Set();
+
+function updateSuggestions(datalistId, set){
+  const dl = document.getElementById(datalistId);
+  dl.innerHTML = '';
+  set.forEach(val=>{
+    const opt = document.createElement('option');
+    opt.value = val;
+    dl.appendChild(opt);
+  });
+}
+
+// مراقبة المدخلات
+document.addEventListener('change', e=>{
+  if(e.target.name?.includes('[father_name]')){
+    if(e.target.value.trim().length > 0){
+      fatherFSet.add(e.target.value.trim());
+      updateSuggestions('fatherFSuggestions', fatherFSet);
+    }
+  }
+  if(e.target.name?.includes('[last_name]')){
+    if(e.target.value.trim().length > 0){
+      fatherLSet.add(e.target.value.trim());
+      updateSuggestions('fatherLSuggestions', fatherLSet);
+    }
+  }
+  if(e.target.name?.includes('[mother_first]')){
+    if(e.target.value.trim().length > 0){
+      motherFSet.add(e.target.value.trim());
+      updateSuggestions('motherFSuggestions', motherFSet);
+    }
+  }
+  if(e.target.name?.includes('[mother_last]')){
+    if(e.target.value.trim().length > 0){
+      motherLSet.add(e.target.value.trim());
+      updateSuggestions('motherLSuggestions', motherLSet);
+    }
+  }
+});
+

@@ -53,8 +53,8 @@
 
       <fieldset>
         <legend>الأراضي الزراعية</legend>
-        <button class="btn btn-ghost" type="button" id="addTerrainBtn">+ إضافة عقار</button>
         <div id="terrainsWrap" class="grid"></div>
+        <button class="btn btn-ghost" type="button" id="addTerrainBtn">+ إضافة عقار</button>
       </fieldset>
 
       <div class="footer">
@@ -74,17 +74,17 @@
 
       <div class="grid grid-2">
         <div><label>الاسم</label><input type="text" name="__NAME__" required></div>
-        <div><label>اسم الأب</label><input type="text" name="__FATHER__" required></div>
-        <div><label>الشهرة</label><input type="text" name="__LAST__" required></div>
+        <div><label>اسم الأب</label><input type="text" name="__FATHER__" list="fatherFSuggestions" required></div>
+        <div><label>الشهرة</label><input type="text" name="__LAST__" list="fatherLSuggestions" required></div>
       </div>
 
       <div class="grid grid-2">
-        <div><label>اسم الأم</label><input type="text" name="__MOTHER_NAME__" required></div>
-        <div><label>شهرة الأم</label><input type="text" name="__MOTHER_LAST__" required></div>
+        <div><label>اسم الأم</label><input type="text" name="__MOTHER_NAME__" list="motherFSuggestions" required></div>
+        <div><label>شهرة الأم</label><input type="text" name="__MOTHER_LAST__" list="motherLSuggestions" required></div>
       </div>
 
       <div class="grid grid-2">
-        <div><label>تاريخ الولادة</label><input type="date" name="__DOB__" required></div>
+        <div><label>تاريخ الولادة</label><input type="date" lang="fr" name="__DOB__" required></div>
         <div><label>الجنس</label>
           <select name="__SEX__" required>
             <option disabled selected>اختر</option><option>ذكر</option><option>أنثى</option>
@@ -140,6 +140,7 @@
             <option>A+</option><option>A-</option>
             <option>B+</option><option>B-</option>
             <option>AB+</option><option>AB-</option>
+            <option>لا أعلم</option>
           </select>
         </div>
         <div>
@@ -189,7 +190,7 @@
       <div class="grid">
   <div>
     <label>منصبك اذا كنت جزء من جمعية او مؤسسة (اختياري)</label>
-    <input type="text" name="__JOB_ASSOC__" placeholder="مثال: رئيس جمعية، عضو...">
+    <input type="text" name="__JOB_ASSOC__" placeholder="مثال: رئيس جمعية، عضو مجلس إدارة...">
   </div>
 </div>
       <button type="button" class="btn btn-danger remove-job">حذف المهنة</button>
@@ -209,10 +210,15 @@
         <div><label>رقم العقار</label><input type="text" name="terrains[__TINDEX__][id]"></div>
         <div><label>نوع الزراعة</label><input type="text" name="terrains[__TINDEX__][type]"></div>
         <div><label>عدد الأشجار</label><input type="number" name="terrains[__TINDEX__][trees]"></div>
+        <div><label>المنطقة</label><input type="text" name="terrains[__TINDEX__][location]" placeholder="جل التينة، البيدر..."></div>
       </div>
     </div>
   </template>
 
   <script src="script.js"></script>
 </body>
+<datalist id="fatherFSuggestions"></datalist>
+<datalist id="fatherLSuggestions"></datalist>
+<datalist id="motherFSuggestions"></datalist>
+<datalist id="motherLSuggestions"></datalist>
 </html>
