@@ -130,6 +130,15 @@
         <button type="button" class="btn btn-ghost add-job">+ إضافة مهنة</button>
       </div>
 
+      <!-- المنصب في جمعية -->
+      <div class="grid">
+        <div>
+          <label>منصب في جمعية أو مؤسسة (اختياري)</label>
+          <input type="text" name="__ASSOC_POS__" placeholder="مثال: رئيس جمعية، عضو مجلس إدارة...">
+        </div>
+      </div>
+
+
       <!-- الأمراض -->
       <div class="grid grid-2">
         <div>
@@ -181,17 +190,13 @@
           </select>
         </div>
         <div><label>المهنة</label><input type="text" name="__JOB_TITLE__"></div>
-        <div><label>جهة العمل</label><input type="text" name="__JOB_EMPLOYER__"></div>
+        <div><label>اسم الشركة/المؤسسة</label><input type="text" name="__JOB_EMPLOYER__"></div>
       </div>
       <div class="grid grid-2 job-loc">
         <!-- <div><label>دولة العمل</label><select name="__JOB_COUNTRY__" class="country-select"></select></div> -->
         <div><label>مكان العمل (المدينة)</label><input type="text" name="__JOB_CITY__"></div>
       </div>
       <div class="grid">
-  <div>
-    <label>منصبك اذا كنت جزء من جمعية او مؤسسة (اختياري)</label>
-    <input type="text" name="__JOB_ASSOC__" placeholder="مثال: رئيس جمعية، عضو مجلس إدارة...">
-  </div>
 </div>
       <button type="button" class="btn btn-danger remove-job">حذف المهنة</button>
     </div>
@@ -207,11 +212,20 @@
         <button type="button" class="btn btn-danger remove-terrain">حذف</button>
       </div>
       <div class="grid grid-2">
-        <div><label>رقم العقار</label><input type="text" name="terrains[__TINDEX__][id]"></div>
+        <div><label>رقم العقار (إختياري)</label><input type="text" name="terrains[__TINDEX__][id]"></div>
         <div><label>نوع الزراعة</label><input type="text" name="terrains[__TINDEX__][type]"></div>
         <div><label>عدد الأشجار</label><input type="number" name="terrains[__TINDEX__][trees]"></div>
         <div><label>المنطقة</label><input type="text" name="terrains[__TINDEX__][location]" placeholder="جل التينة، البيدر..."></div>
       </div>
+      <div><label>نوع الملكية</label>
+      <select name="terrains[__TINDEX__][ownership]">
+        <option value="" disabled selected>اختر نوع الملكية</option>
+        <option value=" (2400 سهم) ملك">(2400 سهم) ملك</option>
+        <option value="ملك (أقل من 2400 سهم)">ملك (أقل من 2400 سهم)</option>
+        <option value="إيجار">إيجار</option>
+      </select>
+      </div>
+
     </div>
   </template>
 

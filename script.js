@@ -52,6 +52,7 @@ function nameMapResident(card, i){
     ['__RES_BUILDING__',`residents[${i}][address][building]`],
     ['__BLOOD__',       `residents[${i}][medical][blood]`],
     ['__DONATE__', `residents[${i}][medical][can_donate]`],
+    ['__ASSOC_POS__', `residents[${i}][association_position]`],
   ];
 
   card.querySelectorAll('input,select,textarea').forEach(el=>{
@@ -158,7 +159,6 @@ function addJob(wrap, resIdx){
     ['__JOB_TITLE__',   `residents[${resIdx}][jobs][${count}][title]`],
     ['__JOB_EMPLOYER__',`residents[${resIdx}][jobs][${count}][employer]`],
     ['__JOB_CITY__',    `residents[${resIdx}][jobs][${count}][city]`],
-    ['__JOB_ASSOC__', `residents[${resIdx}][jobs][${count}][association_position]`],
   ];
   jobCard.querySelectorAll('input,select').forEach(el=>{
     pairs.forEach(([k,v])=>{ if(el.name === k) el.name = v; });
