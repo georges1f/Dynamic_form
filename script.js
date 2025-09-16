@@ -176,6 +176,7 @@ function addJob(wrap, resIdx){
     ['__JOB_TITLE__',   `residents[${resIdx}][jobs][${count}][title]`],
     ['__JOB_EMPLOYER__',`residents[${resIdx}][jobs][${count}][employer]`],
     ['__JOB_CITY__',    `residents[${resIdx}][jobs][${count}][city]`],
+    ['__JOB_RANK__',    `residents[${resIdx}][jobs][${count}][rank]`],
   ];
   jobCard.querySelectorAll('input,select').forEach(el=>{
     pairs.forEach(([k,v])=>{ if(el.name === k) el.name = v; });
@@ -190,16 +191,18 @@ function addJob(wrap, resIdx){
   const jobCity    = jobCard.querySelector(`input[name="residents[${resIdx}][jobs][${count}][city]"]`);
   const jobTitle   = jobCard.querySelector(`input[name="residents[${resIdx}][jobs][${count}][title]"]`);
   const jobEmployer= jobCard.querySelector(`input[name="residents[${resIdx}][jobs][${count}][employer]"]`);
+  const jobRank= jobCard.querySelector(`input[name="residents[${resIdx}][jobs][${count}][rank]"]`);
 
   function toggleJobFields(){
     const v = statusSel.value;
     const active = (v === 'موظف' || v === 'مهنة حرة');
     jobLoc.style.display = active ? 'grid' : 'none';
-    [jobCity, jobTitle, jobEmployer].forEach(el => el.required = active);
+    [jobCity, jobTitle, jobEmployer, jobRank].forEach(el => el.required = active);
     if(!active){
       jobCity.value    = '';
       jobTitle.value   = '';
       jobEmployer.value= '';
+      jobRank.value= '';
     }
   }
   statusSel.addEventListener('change', toggleJobFields);
@@ -253,12 +256,16 @@ hhCountry && hhCountry.addEventListener('change', ()=>{
 // ————————————————————————————————————————————————
 // إضافة عقار زراعي
 // ————————————————————————————————————————————————
-const addTerrainBtn = document.getElementById('addTerrainBtn');
 addTerrainBtn.addEventListener('click', ()=>{
   const node = tTpl.content.cloneNode(true);
-  node.querySelector('.remove-terrain').addEventListener('click', ()=> node.querySelector('.terrain-card').remove());
-  terrainsWrap.appendChild(node);
+  const card = node.querySelector('.terrain-card');
+  const removeBtn = node.querySelector('.remove-terrain');
+
+  removeBtn.addEventListener('click', ()=> card.remove());
+
+  terrainsWrap.appendChild(card);
 });
+
 
 // ————————————————————————————————————————————————
 // الأمراض المزمنة: "لا يوجد" يلغي البقية والعكس

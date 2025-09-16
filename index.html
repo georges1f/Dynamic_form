@@ -143,7 +143,7 @@
       <div class="grid grid-2">
         <div>
           <label>فصيلة الدم</label>
-          <select name="__BLOOD__">
+          <select name="__BLOOD__" required>
             <option disabled selected>اختر</option>
             <option>O+</option><option>O-</option>
             <option>A+</option><option>A-</option>
@@ -189,9 +189,11 @@
             <option>مهنة حرة</option>
           </select>
         </div>
-        <div><label>المهنة</label><input type="text" name="__JOB_TITLE__"></div>
+        <div><label>المهنة</label><input type="text" name="__JOB_TITLE__" placeholder="دواجن، مصرفي، تأمين..."></div>
         <div><label>اسم الشركة/المؤسسة</label><input type="text" name="__JOB_EMPLOYER__"></div>
+        <div><label>الرتبة الوظيفية</label><input type="text" name="__JOB_RANK__" placeholder="مدير، موظف..."></div>
       </div>
+      
       <div class="grid grid-2 job-loc">
         <!-- <div><label>دولة العمل</label><select name="__JOB_COUNTRY__" class="country-select"></select></div> -->
         <div><label>مكان العمل (المدينة)</label><input type="text" name="__JOB_CITY__"></div>
@@ -213,12 +215,12 @@
       </div>
       <div class="grid grid-2">
         <div><label>رقم العقار (إختياري)</label><input type="text" name="terrains[__TINDEX__][id]"></div>
-        <div><label>نوع الزراعة</label><input type="text" name="terrains[__TINDEX__][type]"></div>
-        <div><label>عدد الأشجار</label><input type="number" name="terrains[__TINDEX__][trees]"></div>
-        <div><label>المنطقة</label><input type="text" name="terrains[__TINDEX__][location]" placeholder="جل التينة، البيدر..."></div>
+        <div><label>نوع الزراعة</label><input type="text" name="terrains[__TINDEX__][type]" required></div>
+        <div><label>عدد الأشجار</label><input type="number" name="terrains[__TINDEX__][trees]" required></div>
+        <div><label>المنطقة</label><input type="text" name="terrains[__TINDEX__][location]" placeholder="جل التينة، البيدر..." required></div>
       </div>
       <div><label>نوع الملكية</label>
-      <select name="terrains[__TINDEX__][ownership]">
+      <select name="terrains[__TINDEX__][ownership]" required>
         <option value="" disabled selected>اختر نوع الملكية</option>
         <option value=" (2400 سهم) ملك">(2400 سهم) ملك</option>
         <option value="ملك (أقل من 2400 سهم)">ملك (أقل من 2400 سهم)</option>

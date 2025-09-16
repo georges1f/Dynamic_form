@@ -47,3 +47,13 @@ input:focus,select:focus{border-color:var(--accent);outline:none;box-shadow:0 0 
   box-sizing: border-box;
 }
 .radio-group{display:flex;flex-wrap:wrap;gap:8px}
+
+/* اجعل كل label مرتبط بحقل required يحتوي نجمة */
+label:has(+ input[required])::after,
+label:has(+ select[required])::after,
+label:has(+ textarea[required])::after {
+  content: " *";
+  color: var(--danger);
+  font-weight: bold;
+}
+
